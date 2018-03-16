@@ -60,10 +60,7 @@ class Search(Database):
         self.entries = self.read_database()
 
     def exact_date(self, date):
-        """
-        Finds entry from an exact date search and returns a list of matching objects
-
-        """
+        """Finds entry from an exact date search and returns a list of matching objects."""
 
         entries_found = []
 
@@ -74,10 +71,7 @@ class Search(Database):
         return entries_found
 
     def range_of_dates(self, start_date, end_date):
-        """
-        Finds entry from a ranged date search and returns a list of matching objects
-
-        """
+        """Finds entry from a ranged date search and returns a list of matching objects."""
 
         start_date = datetime.strptime(start_date, "%m/%d/%Y")
         end_date = datetime.strptime(end_date, "%m/%d/%Y")
@@ -93,29 +87,23 @@ class Search(Database):
         return entries_found
 
     def exact_search(self, search_term):
-        """
-        Finds entry from an exact title search and returns a list of matching objects
-
-        """
+        """Finds entry from an exact title or notes search and returns a list of matching objects."""
 
         entries_found = []
 
         for data in self.entries:
-            if search_term in data['Title']:
+            if search_term.lower() in data['Title'].lower() or search_term.lower() in data['Notes'].lower():
                 entries_found.append(Entry.from_dict(data))
 
         return entries_found
 
     def regex_pattern(self, pattern):
-        """
-        Finds entry from a regex title search and returns a list of matching objects
-
-        """
+        """Finds entry from a regex title search and returns a list of matching objects."""
 
         entries_found = []
 
         for data in self.entries:
-            if re.search(pattern, data['Title']):
+            if re.search(pattern, data['Title']) or re.search(pattern, data['Notes']):
                 entries_found.append(Entry.from_dict(data))
 
         return entries_found
