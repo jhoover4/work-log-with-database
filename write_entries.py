@@ -1,12 +1,13 @@
-import csv
 from datetime import datetime
+
 
 class Entry():
     """This will help on the transfer to the database later on..."""
 
-    def __init__(self, date, title, time_spent, notes=''):
-        self.fields = ['Date','Title','Time Spent', 'Notes']
+    def __init__(self, index, date, title, time_spent, notes=''):
+        self.fields = ['Index', 'Date','Title','Time Spent', 'Notes']
 
+        self.index = index
         self.date = date
         self.title = title
         self.time_spent = time_spent
@@ -58,18 +59,3 @@ class Entry():
             time_good = False
 
         return time_good
-
-
-class AddEntries():
-
-    @staticmethod
-    def write_to_csv(entry):
-        """Takes one entry. Can take more if needed"""
-
-        with open('work_entries.csv', 'w') as f:
-            fieldnames = entry.fields
-
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-
-            writer.writeheader()
-            writer.writerow(entry.to_dict())

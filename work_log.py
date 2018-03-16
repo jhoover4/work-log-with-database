@@ -1,7 +1,8 @@
 import os
 
-from write_entries import Entry, AddEntries
-from search_entries import Search
+from write_entries import Entry
+from search_entries import Search, Modify_Entries
+
 
 def clear():
     """Clears screen"""
@@ -34,6 +35,7 @@ def user_interface():
             user_input = str(input("Please enter valid input\n")).strip()
 
         if user_input.lower() == "c" or user_input.lower() == "q":
+            print("Thanks for using work log!\n")
             break
 
         if user_input.lower() == "a":
@@ -73,8 +75,11 @@ def add_task_ui():
 
     notes = input("Notes (Optional, you can leave this empty): \n")
 
-    new_entry = Entry(task_date, task_title, time_spent, notes)
-    AddEntries.write_to_csv(new_entry)
+    csv = Modify_Entries()
+    new_index = csv.set_index()
+
+    new_entry = Entry(new_index, task_date, task_title, time_spent, notes)
+    Modify_Entries.add_entries([new_entry])
 
     input("The entry has been added. Press any key to return to the menu\n")
 
@@ -118,8 +123,10 @@ def search_task_ui():
                 print("Date of the task:\n")
                 task_date = input("Please use DD/MM/YYYY: \n")
 
-
             entries = search_csv.exact_date(task_date)
+
+            selected_entry = search_csv.search_list(entries)
+            search_csv.display_entry(selected_entry)
 
         if user_input.lower() == "b":
             search_csv.range_of_dates()
@@ -134,11 +141,13 @@ def search_task_ui():
                 task_title = input("Title of the task: \n")
 
             entries = search_csv.exact_search(task_title)
+            search_csv.display_entry(selected_entry)
 
         if user_input.lower() == "d":
             pattern = input("Enter a Regex pattern: \n")
 
             entries = search_csv.regex_pattern(pattern)
+            search_csv.display_entry(selected_entry)
 
         print("Returned entries:")
         print("=" * 15 + "\n")
