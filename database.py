@@ -12,11 +12,35 @@ class Database:
         self.database_name = database_name + '.csv'
         self.database_file_path = os.path.dirname(os.path.realpath(__file__)) + self.database_name
 
+        self.entries = self.read_database()
+
     def create_database(self):
         """Creates csv if it doesn't already exist."""
 
         if not os.path.exists(self.database_file_path):
             open(self.database_name, 'a').close()
+
+    def rewrite_database(self):
+        """Creates completely new database"""
+
+        with open(self.database_name, 'w') as f:
+
+            fieldnames = self.entries[0].fields
+
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+
+            writer.writeheader()
+
+            if len(self.entries) == 0:
+                # if we only have one entry a different method needs to be used
+                writer.writerow(self.entries.to_dict())
+            else:
+                entry_list = []
+
+                for entry in self.entries:
+                    entry_list.append(entry.to_dict())
+
+                writer.writerows(entry_list)
 
     def read_database(self):
         """Opens up data to be worked with."""
@@ -38,26 +62,54 @@ class Database:
 
         return entries
 
-    def add_entry(self, entry):
-        """Takes one entry."""
+    def add_entries(self, entries):
+        """Takes a list of Entry objects"""
 
         with open(self.database_name, 'a') as f:
-            fieldnames = entry.fields
+
+            fieldnames = entries[0].fields
+
             writer = csv.DictWriter(f, fieldnames=fieldnames)
 
             if os.stat(self.database_name).st_size == 0:
                 writer.writeheader()
 
-            writer.writerow(entry.to_dict())
+            if len(entries) == 0:
+                # if we only have one entry a different method needs to be used
+                writer.writerow(entries.to_dict())
+            else:
+                entry_list = []
+
+                for entry in entries:
+                    entry_list.append(entry.to_dict())
+
+                writer.writerows(entry_list)
+
+    def del_entry(self, entry, title):
+        """Takes one entry. Can take more if needed"""
+
+        for entry in self.all_entries:
+            if entry.title == title:
+                del entry
+
+        self.rewrite_database(self.all_entries)
+
+    def edit_entry(self, entry, title):
+        """Takes one entry. Can take more if needed"""
+
+        for entry in self.all_entries:
+            if entry.title == title:
+                del entry
+
+    def set_index(self):
+
+        return len(self.all_entries)
 
 
 class Search(Database):
 
     def __init__(self):
-        """Initially reads csv so we don't have to repeatedly search for entries"""
-
         super().__init__()
-        self.entries = self.read_database()
 
     def exact_date(self, date):
         """Finds entry from an exact date search and returns a list of matching objects."""

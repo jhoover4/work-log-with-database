@@ -4,10 +4,9 @@ from datetime import datetime
 class Entry():
     """This will help on the transfer to the database later on..."""
 
-    def __init__(self, index, date, title, time_spent, notes=''):
-        self.fields = ['Index', 'Date','Title','Time Spent', 'Notes']
+    def __init__(self, date, title, time_spent, notes=''):
+        self.fields = ['Date','Title','Time Spent', 'Notes']
 
-        self.index = index
         self.date = date
         self.title = title
         self.time_spent = time_spent
@@ -58,10 +57,14 @@ class Entry():
         except ValueError:
             time_good = False
 
-<<<<<<< HEAD:write_entries.py
-        return time_good
-=======
         return time_good
 
+    def display_entry(self):
+        """Prints an entry object for user"""
 
->>>>>>> old_computer:entry.py
+        text = ""
+
+        for key, value in self.to_dict().items():
+            text += key + " : " + value + "\n"
+
+        return text
