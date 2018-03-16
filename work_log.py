@@ -1,7 +1,7 @@
 import os
 
-from write_entries import Entry, AddEntries
-from search_entries import Search
+from entry import Entry
+from database import Search, Database
 
 def clear():
     """Clears screen"""
@@ -17,6 +17,12 @@ def user_interface():
 
     while True:
         clear()
+
+        # create database if needed
+        global database
+
+        database = Database()
+        database.create_database()
 
         prompt = "Welcome to the Work Log project for the Treehouse Techdegree!\n\n"
         prompt += "Choose an option:\n"
@@ -57,9 +63,9 @@ def add_task_ui():
 
         task_date = input("Please use DD/MM/YYYY: \n")
 
-    task_title = input("Title of the task: \n")
+    task_title = input("Title of the task: \n").lower().strip()
 
-    while task_title.lower().isalnum() is False:
+    while task_title.replace(" ", "").isalnum() == False:
         clear()
         print("Task title must contain numbers or letters\n")
 
@@ -74,7 +80,7 @@ def add_task_ui():
     notes = input("Notes (Optional, you can leave this empty): \n")
 
     new_entry = Entry(task_date, task_title, time_spent, notes)
-    AddEntries.write_to_csv(new_entry)
+    database.add_entry(new_entry)
 
     input("The entry has been added. Press any key to return to the menu\n")
 
@@ -122,7 +128,23 @@ def search_task_ui():
             entries = search_csv.exact_date(task_date)
 
         if user_input.lower() == "b":
-            search_csv.range_of_dates()
+            print("Start date in range:\n")
+            start_date = input("Please use DD/MM/YYYY: \n")
+
+            print("End date in range:\n")
+            end_date = input("Please use DD/MM/YYYY: \n")
+
+            while Entry.date_check(start_date) == False or Entry.date_check(end_date) == False:
+                clear()
+                print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
+
+                print("Start date in range:\n")
+                start_date = input("Please use DD/MM/YYYY: \n")
+
+                print("End date in range:\n")
+                end_date = input("Please use DD/MM/YYYY: \n")
+
+            entries = search_csv.range_of_dates(start_date, end_date)
 
         if user_input.lower() == "c":
             task_title = input("Title of the task: \n")

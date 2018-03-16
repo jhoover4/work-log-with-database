@@ -1,4 +1,3 @@
-import csv
 from datetime import datetime
 
 class Entry():
@@ -60,16 +59,3 @@ class Entry():
         return time_good
 
 
-class AddEntries():
-
-    @staticmethod
-    def write_to_csv(entry):
-        """Takes one entry. Can take more if needed"""
-
-        with open('work_entries.csv', 'w') as f:
-            fieldnames = entry.fields
-
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-
-            writer.writeheader()
-            writer.writerow(entry.to_dict())
