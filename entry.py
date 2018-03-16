@@ -58,4 +58,10 @@ class Entry():
         except ValueError:
             time_good = False
 
+<<<<<<< HEAD:write_entries.py
         return time_good
+=======
+        return time_good
+
+
+>>>>>>> old_computer:entry.py

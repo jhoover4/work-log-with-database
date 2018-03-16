@@ -1,8 +1,15 @@
 import os
+import re
 
+<<<<<<< HEAD
 from write_entries import Entry
 from search_entries import Search, Modify_Entries
 
+=======
+
+from entry import Entry
+from database import Search, Database
+>>>>>>> old_computer
 
 def clear():
     """Clears screen"""
@@ -18,6 +25,12 @@ def user_interface():
 
     while True:
         clear()
+
+        # create database if needed
+        global database
+
+        database = Database()
+        database.create_database()
 
         prompt = "Welcome to the Work Log project for the Treehouse Techdegree!\n\n"
         prompt += "Choose an option:\n"
@@ -59,27 +72,26 @@ def add_task_ui():
 
         task_date = input("Please use DD/MM/YYYY: \n")
 
+    # no need to validate task_title
     task_title = input("Title of the task: \n")
-
-    while task_title.lower().isalnum() is False:
-        clear()
-        print("Task title must contain numbers or letters\n")
-
-        task_title = input("Title of the task: \n")
-
 
     time_spent = input("Time spent (rounded minutes): \n")
     while Entry.time_check(time_spent) == False:
         clear()
-        time_spent = input("Please use DD/MM/YYYY: \n")
+        time_spent = input("Please use a valid number of minutes: \n")
 
     notes = input("Notes (Optional, you can leave this empty): \n")
 
+<<<<<<< HEAD
     csv = Modify_Entries()
     new_index = csv.set_index()
 
     new_entry = Entry(new_index, task_date, task_title, time_spent, notes)
     Modify_Entries.add_entries([new_entry])
+=======
+    new_entry = Entry(task_date, task_title, time_spent, notes)
+    database.add_entry(new_entry)
+>>>>>>> old_computer
 
     input("The entry has been added. Press any key to return to the menu\n")
 
@@ -129,22 +141,33 @@ def search_task_ui():
             search_csv.display_entry(selected_entry)
 
         if user_input.lower() == "b":
-            search_csv.range_of_dates()
+            print("Start date in range:\n")
+            start_date = input("Please use DD/MM/YYYY: \n")
+
+            print("End date in range:\n")
+            end_date = input("Please use DD/MM/YYYY: \n")
+
+            while Entry.date_check(start_date) == False or Entry.date_check(end_date) == False:
+                clear()
+                print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
+
+                print("Start date in range:\n")
+                start_date = input("Please use DD/MM/YYYY: \n")
+
+                print("End date in range:\n")
+                end_date = input("Please use DD/MM/YYYY: \n")
+
+            entries = search_csv.range_of_dates(start_date, end_date)
 
         if user_input.lower() == "c":
-            task_title = input("Title of the task: \n")
-
-            while task_title.lower().isalnum() is False:
-                clear()
-                print("Task title must contain numbers or letters\n")
-
-                task_title = input("Title of the task: \n")
+            # no need to validate task title
+            task_title = input("Search by task title or notes: \n")
 
             entries = search_csv.exact_search(task_title)
             search_csv.display_entry(selected_entry)
 
         if user_input.lower() == "d":
-            pattern = input("Enter a Regex pattern: \n")
+            pattern = input("Search by task title or notes with a regex pattern: \n")
 
             entries = search_csv.regex_pattern(pattern)
             search_csv.display_entry(selected_entry)
@@ -161,6 +184,7 @@ def search_task_ui():
                 print("=" * 15)
 
         input("Press any key to return to the menu\n>")
+
 
 if __name__ == "__main__":
     user_interface()
