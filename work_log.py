@@ -1,6 +1,7 @@
 from database import Database
 from user_interface import InterfaceHelpers
 
+
 def work_log():
     """Command line menu providing an option to either encrypt or decrypt a value.
     Add input settings required to perform the cipher process"""
@@ -39,6 +40,7 @@ def work_log():
 
         if user_input.lower() == "b":
             user_interface.search_task()
+
 
 if __name__ == "__main__":
     work_log()

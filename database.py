@@ -33,7 +33,7 @@ class Database:
 
             if len(self.entries) == 0:
                 # if we only have one entry a different method needs to be used
-                writer.writerow(self.entries.to_dict())
+                writer.writerow(self.entries[0].to_dict())
             else:
                 entry_list = []
 
@@ -85,25 +85,21 @@ class Database:
 
                 writer.writerows(entry_list)
 
-    def del_entry(self, entry, title):
+    def del_entry(self, title):
         """Takes one entry. Can take more if needed"""
 
-        for entry in self.all_entries:
+        for entry in self.entries:
             if entry.title == title:
                 del entry
 
-        self.rewrite_database(self.all_entries)
+        self.rewrite_database()
 
-    def edit_entry(self, entry, title):
+    def edit_entry(self, title):
         """Takes one entry. Can take more if needed"""
 
-        for entry in self.all_entries:
+        for entry in self.entries:
             if entry.title == title:
                 del entry
-
-    def set_index(self):
-
-        return len(self.all_entries)
 
 
 class Search(Database):
@@ -133,7 +129,7 @@ class Search(Database):
         for data in self.entries:
             data_date = datetime.strptime(data['Date'], "%m/%d/%Y")
 
-            if data_date >= start_date and data_date <= end_date:
+            if start_date <= data_date <= end_date:
                 entries_found.append(Entry.from_dict(data))
 
         return entries_found

@@ -138,20 +138,20 @@ class InterfaceHelpers:
 
         user_input = ''
         i = 0
-        valid_input = ['q']
 
         while user_input.lower() != 'q' and i <= len(entries) - 1:
             self.clear()
+            valid_input = ['q', 'e']
 
             if len(entries) == 1:
-                prompt = "One entry returned.\n\n"
+                prompt = "One entry returned. Press (q) to return to menu or (e) to edit.\n\n"
                 prompt += entries[i].display_entry() + "\n"
                 prompt += "Press any key to return to menu."
                 input(prompt)
 
                 return
 
-            prompt = "Page through returned entries. Press (q) to return to menu.\n\n"
+            prompt = "Page through returned entries. Press (q) to return to menu or (e) to edit.\n\n"
             prompt += entries[i].display_entry() + "\n"
 
             if i != 0:
@@ -173,6 +173,8 @@ class InterfaceHelpers:
                 i -= 1
             else:
                 i += 1
+
+            # TODO: Add ability to edit entry.
 
     def date_search(self, entries):
         user_input = input("Please enter a date:\n> ")
