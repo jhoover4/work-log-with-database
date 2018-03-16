@@ -16,7 +16,7 @@ class Entry():
         """Turn object data into a dictionary"""
 
         entry_dict = {
-            self.fields[0] : self.date,
+            self.fields[0]: self.date,
             self.fields[1]: self.title,
             self.fields[2]: self.time_spent,
             self.fields[3]: self.notes,
@@ -65,6 +65,6 @@ class Entry():
         text = ""
 
         for key, value in self.to_dict().items():
-            text += key + " : " + value + "\n"
+            text += key + ": " + value + "\n"
 
         return text
