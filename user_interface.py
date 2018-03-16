@@ -137,19 +137,33 @@ class InterfaceHelpers:
     def entry_pagination(self, entries):
         """Pages through returned entries for user"""
 
-        for i in range(len(entries)):
-            prompt = "Page through returned entries.\n\n"
-            prompt += entries[i].display_entry()
+        prompt = "Page through returned entries. Press (q) to return to menu\n\n"
+
+        user_input = ''
+        i = 0
+        valid_input = ['q']
+
+        while user_input.lower() != 'q' and i <= len(entries) - 1:
+            self.clear()
+
+            prompt += entries[i].display_entry() + "\n"
             if i != 0:
-                prompt += "(p)revious entry\n"
+                prompt += "(p)revious\n"
+                valid_input.append('p')
             if i != len(entries) - 1:
-                prompt += "(n)ext entry\n"
+                prompt += "(n)ext\n"
+                valid_input.append('n')
 
-            new_input = input(prompt)
+            user_input = input(prompt)
 
-            while new_input.lower() not in ['p', 'n']:
+            while user_input.lower() not in valid_input:
                 print("Please enter valid input\n")
-                new_input = input(prompt)
+                user_input = input(prompt)
+
+            if user_input.lower() == 'p':
+                i -= 1
+            else:
+                i += 1
 
     def date_search(self, entries):
         pass
@@ -165,6 +179,8 @@ class InterfaceHelpers:
         prompt += "c) Return to menu\n\n"
         prompt += "> "
 
+        user_input = input(prompt)
+
         while user_input.lower() not in valid_input:
             print("Not a valid entry. Please enter a number or press 'q' to quit ")
             user_input = input("\n> ")
@@ -176,4 +192,4 @@ class InterfaceHelpers:
             self.date_search(selected_entries)
 
         if user_input.lower() == "b":
-            self.date_search(selected_entries)
+            self.entry_pagination(selected_entries)
