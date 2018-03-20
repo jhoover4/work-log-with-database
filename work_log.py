@@ -1,4 +1,4 @@
-from database import Database
+from models import Employee, Task, db
 from user_interface import InterfaceHelpers
 
 
@@ -6,13 +6,13 @@ def work_log():
     """Command line menu providing an option to either encrypt or decrypt a value.
     Add input settings required to perform the cipher process"""
 
+    db.connect()
+    db.create_tables([Employee, Task])
+
     valid_input = ['a', 'b', 'c', 'q']
 
     while True:
-        # create database if needed
-        database = Database()
-        database.create_database()
-        user_interface = InterfaceHelpers(database)
+        user_interface = InterfaceHelpers()
 
         user_interface.clear()
 

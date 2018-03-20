@@ -1,15 +1,11 @@
 import os
 from datetime import datetime
 
-
-from entry import Entry
-from database import Search
+from helpers import HelperFunctions
+from models import Task, Employee
 
 
 class InterfaceHelpers:
-
-    def __init__(self, database):
-        self.database = database
 
     @staticmethod
     def clear():
@@ -26,7 +22,7 @@ class InterfaceHelpers:
         self.clear()
         task_date = input("Date of the task (Please use DD/MM/YYYY): \n")
 
-        while not Entry.date_check(task_date):
+        while not HelperFunctions.date_check(task_date):
             self.clear()
             print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
 
@@ -39,7 +35,7 @@ class InterfaceHelpers:
         # task time spent
         self.clear()
         time_spent = input("Time spent (integer of rounded minutes): \n")
-        while not Entry.time_check(time_spent):
+        while not HelperFunctions.time_check(time_spent):
             self.clear()
             time_spent = input("Please use a valid number of minutes: \n")
 
@@ -47,27 +43,40 @@ class InterfaceHelpers:
         self.clear()
         notes = input("Notes (Optional, you can leave this empty): \n")
 
-        new_entry = Entry(task_date, task_title, time_spent, notes)
+        # employee
+        self.clear()
+        employee_input = input("Employee: \n")
 
-        self.database.add_entries([new_entry])
+        try:
+            employee = Employee.get(Employee.name == employee_input)
+        except:
+            employee = Employee.create(name=employee_input)
+
+        Task.create(
+            task_date=task_date,
+            title=task_title,
+            time_spent=time_spent,
+            notes=notes,
+            employee=employee)
 
         self.clear()
-        input("The entry has been added! Press any key to return to the menu\n")
+        input("The task has been added! Press any key to return to the menu\n")
 
     def search_task(self):
         """For searching tasks from the csv file.
         Must have a date, title, time spent, and optional body text"""
 
-        search_ui_input = ['a', 'b', 'c', 'd', 'e', 'q']
+        search_ui_input = ['a', 'b', 'c', 'd', 'e', 'f', 'q']
+        entries = None
 
         while True:
             self.clear()
 
             prompt = "Do you want to search by:\n\n"
-            prompt += "a) Exact Date\n"
-            prompt += "b) Range of Dates\n"
-            prompt += "c) Exact Search\n"
-            prompt += "d) Regex Pattern\n"
+            prompt += "a) Employee\n"
+            prompt += "b) Task Date Range\n"
+            prompt += "c) Task Time Spent\n"
+            prompt += "d) Search Term\n"
             prompt += "e) Return to Menu\n\n"
             prompt += "> "
 
@@ -79,87 +88,75 @@ class InterfaceHelpers:
                 print(prompt)
                 user_input = str(input("Please enter valid input\n")).strip()
 
-            search_csv = Search()
-
             if user_input.lower() == "e":
                 break
 
             self.clear()
 
             if user_input.lower() == "a":
-                task_date = input("Date of the task (Please use DD/MM/YYYY):\n")
-
-                while not Entry.date_check(task_date):
-                    self.clear()
-                    print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
-                    task_date = input("Date of the task (Please use DD/MM/YYYY):\n")
-
-                entries = search_csv.exact_date(task_date)
+                entries = self.search_employees()
 
             if user_input.lower() == "b":
-                start_date = input("Start date in range (Please use DD/MM/YYYY):\n")
-                end_date = input("End date in range (Please use DD/MM/YYYY):\n")
-
-                while not Entry.date_check(start_date) or not Entry.date_check(end_date):
-                    self.clear()
-                    print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
-
-                    print("Start date in range:\n")
-                    start_date = input("Please use DD/MM/YYYY: \n")
-
-                    print("End date in range:\n")
-                    end_date = input("Please use DD/MM/YYYY: \n")
-
-                entries = search_csv.range_of_dates(start_date, end_date)
+                entries = self.search_dates()
 
             if user_input.lower() == "c":
-                task_title = input("Search by task title or notes: \n")
+                task_time_spent = input("Search by task time spent: \n")
 
-                entries = search_csv.exact_search(task_title)
+                entries = Task.select().where(Task.time_spent == task_time_spent)
 
             if user_input.lower() == "d":
-                pattern = input("Search by task title or notes with a regex pattern (case sensitive): \n")
+                task_title = input("Search by task title or notes: \n")
 
-                entries = search_csv.regex_pattern(pattern)
+                entries = Task.select().where((Task.title == task_title) | (Task.time_spent == task_title))
 
-            if not entries:
+            if entries is None:
                 print("No entries available\n\n")
             else:
-                if len(entries) > 1:
-                    self.search_returned_entries(entries)
-                else:
-                    self.entry_pagination(entries)
+                self.entry_pagination(entries)
+
+    def display_entry(self, entry):
+        text = ""
+
+        text += 'Task Date: ' + entry.task_date + "\n"
+        text += 'Title: ' + entry.title + "\n"
+        text += 'Time Spent: ' + str(entry.time_spent) + "\n"
+        text += 'Notes: ' + entry.notes + "\n"
+        text += 'Employee: ' + entry.employee.name + "\n"
+
+        return text
 
     def entry_pagination(self, entries):
         """Pages through returned entries for user"""
 
-        # sort by oldest date to newest date
-        entries.sort(key=lambda entry: datetime.strptime(entry.date, '%m/%d/%Y'))
-
         user_input = ''
         i = 0
+        query_len = entries.count()
 
-        while user_input.lower() != 'q' and i <= len(entries) - 1:
+        for task in entries.select().order_by(Task.task_date).paginate(1, 1):
             self.clear()
-            valid_input = ['q', 'e']
+            valid_input = ['q', 'e', 'd']
 
-            if len(entries) == 1:
-                prompt = "One entry returned. Press (q) to return to menu or (e) to edit.\n\n"
-                prompt += entries[i].display_entry() + "\n"
+            if query_len == 1:
+                prompt = "One task returned. Press (q) to return to menu or (e) to edit.\n\n"
+                prompt += self.display_entry(entries[i]) + "\n"
                 prompt += "Press any key to return to menu."
                 input(prompt)
 
                 return
 
-            prompt = "Page through returned entries. Press (q) to return to menu or (e) to edit.\n\n"
-            prompt += entries[i].display_entry() + "\n"
+            while user_input.lower() != 'q':
+                self.clear()
+                valid_input = ['q', 'e', 'd']
 
-            if i != 0:
-                prompt += "(p)revious\n"
-                valid_input.append('p')
-            if i != len(entries) - 1:
-                prompt += "(n)ext\n"
-                valid_input.append('n')
+                prompt = "Page through returned tasks. Press (q) to return to menu or (e) to edit.\n\n"
+                prompt += self.display_entry(task) + "\n"
+
+                if i != 0:
+                    prompt += "(p)revious\n"
+                    valid_input.append('p')
+                if i != query_len - 1:
+                    prompt += "(n)ext\n"
+                    valid_input.append('n')
 
             user_input = input(prompt)
 
@@ -174,44 +171,86 @@ class InterfaceHelpers:
             else:
                 i += 1
 
-            # TODO: Add ability to edit entry.
+            # TODO: Add ability to edit task.
+            # TODO: Add ability to delete task.
 
-    def date_search(self, entries):
-        user_input = input("Please enter a date:\n> ")
+    @staticmethod
+    def search_employees():
+        """Displays all employees in database and lets user view entries of selected employee."""
 
-        while not Entry.date_check(user_input):
-            user_input = input("Please use MM/DD/YYYY: \n")
+        employees = Employee.select()
 
-        entries_found = []
+        valid_input = ['q']
 
-        for entry in entries:
-            if entry.date == user_input:
-                entries_found.append(entry)
+        for task in employees:
+            print(str(task.id) + ") " + task.name.title() + "\n")
+            valid_input.append(str(task.id))
+            valid_input.append(task.name.lower())
 
-        self.entry_pagination(entries_found)
-
-    def search_returned_entries(self, selected_entries):
-        """User UI to search a set of entries."""
-
-        valid_input = ['a', 'b', 'c', 'q']
-
-        prompt = "There are multiple returned entries. How would you like to search them?\n"
-        prompt += "a) Search by date\n"
-        prompt += "b) Page through entries\n"
-        prompt += "c) Return to menu\n\n"
+        prompt = "\nPlease select an task using the name or id.\n"
         prompt += "> "
 
-        user_input = input(prompt)
-
-        while user_input.lower() not in valid_input:
-            print("Not a valid entry. Please choose an option or press 'q' to quit ")
+        user_input = input(prompt).lower()
+        while user_input not in valid_input:
+            print("Not a valid task. Please choose another option or press 'q' to quit ")
             user_input = input("\n> ")
 
-        if user_input.lower() == "c" or user_input.lower() == "q":
-            return
+        found_tasks = (Task
+                       .select()
+                       .join(Employee)
+                       .where(Employee.name == user_input.title()))
 
-        if user_input.lower() == "a":
-            self.date_search(selected_entries)
+        while isinstance(found_tasks, list):
+            # if there are two names that are the same
+            print("Multiple matches found. Please choose a correct match.\n")
 
-        if user_input.lower() == "b":
-            self.entry_pagination(selected_entries)
+            for task in found_tasks:
+                print(task.id + ") " + task.name.title() + "\n")
+                valid_input.append(str(task.id))
+                valid_input.append(task.name.lower())
+
+            while user_input not in valid_input:
+                print("Not a valid task. Please choose another option or press 'q' to quit ")
+                user_input = input("\n> ")
+
+            found_tasks = (Task
+                           .select()
+                           .join(Employee)
+                           .where(Employee.name == user_input.title()))
+
+        return found_tasks
+
+    def search_dates(self):
+        """Displays all dates in database and lets user choose a date to view entries."""
+
+        dates = Task.select()
+
+        valid_input = ['q']
+
+        for task in dates:
+            print(str(task.id) + ") " + str(task.task_date) + "\n")
+            valid_input.append(str(task.id))
+
+        prompt = "\nPlease select an task using a date range. Please use DD/MM/YYYY.\n"
+        prompt += "\nStart date:\n> "
+
+        start_date = input(prompt).lower()
+        end_date = input("\nEnd date:\n> ").lower()
+        while not HelperFunctions.date_check(start_date) or not HelperFunctions.date_check(end_date):
+            self.clear()
+
+            print("Error: {} doesn't seem to be a valid date.\n\n".format(start_date))
+
+            start_date = input(prompt).lower()
+            end_date = input("\nEnd date:\n> ").lower()
+
+        try:
+            found_entries = (Task
+                         .select()
+                         .where(Task.task_date.between(start_date, end_date)))
+        except:
+            print("Not a valid range. Please try again or press 'q' to quit ")
+
+            found_entries = self.search_dates()
+
+        return found_entries
