@@ -107,14 +107,16 @@ class InterfaceHelpers:
             if user_input.lower() == "d":
                 task_title = input("Search by task title or notes: \n")
 
-                entries = Task.select().where((Task.title == task_title) | (Task.time_spent == task_title))
+                entries = Task.select().where((Task.title == task_title) | (Task.notes == task_title))
 
             if entries is None:
                 print("No entries available\n\n")
             else:
                 self.entry_pagination(entries)
 
-    def display_entry(self, entry):
+    def display_task(self, entry):
+        """Displays task data for user."""
+
         text = ""
 
         text += 'Task Date: ' + entry.task_date + "\n"
@@ -124,6 +126,17 @@ class InterfaceHelpers:
         text += 'Employee: ' + entry.employee.name + "\n"
 
         return text
+
+    def edit_task(self, entry):
+        """UI for user to edit a task."""
+
+        prompt = "What would you like to edit?"
+
+        prompt += "a) Task Date:\n"
+        prompt += "b) Title:\n"
+        prompt += "c) Time Spent:\n"
+        prompt += "d) Notes:\n"
+        prompt += "e) Employee:\n"
 
     def entry_pagination(self, entries):
         """Pages through returned entries for user"""
@@ -138,7 +151,7 @@ class InterfaceHelpers:
 
             if query_len == 1:
                 prompt = "One task returned. Press (q) to return to menu or (e) to edit.\n\n"
-                prompt += self.display_entry(entries[i]) + "\n"
+                prompt += self.display_task(entries[i]) + "\n"
                 prompt += "Press any key to return to menu."
                 input(prompt)
 
@@ -149,7 +162,7 @@ class InterfaceHelpers:
                 valid_input = ['q', 'e', 'd']
 
                 prompt = "Page through returned tasks. Press (q) to return to menu or (e) to edit.\n\n"
-                prompt += self.display_entry(task) + "\n"
+                prompt += self.display_task(task) + "\n"
 
                 if i != 0:
                     prompt += "(p)revious\n"
@@ -168,11 +181,12 @@ class InterfaceHelpers:
 
             if user_input.lower() == 'p':
                 i -= 1
+            elif user_input.lower() == 'd':
+                task.delete_instance()
+            elif user_input.lower() == 'e':
+                task.delete_instance()
             else:
                 i += 1
-
-            # TODO: Add ability to edit task.
-            # TODO: Add ability to delete task.
 
     @staticmethod
     def search_employees():

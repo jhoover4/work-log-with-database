@@ -33,6 +33,7 @@ def work_log():
 
         if user_input.lower() == "c" or user_input.lower() == "q":
             print("Thanks for using work log!\n")
+            db.close()
             break
 
         if user_input.lower() == "a":
