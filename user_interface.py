@@ -158,31 +158,31 @@ class InterfaceHelpers:
                 response = "Update Task Date:\n>"
                 edit_input = input(response)
 
-                entry.task_date=edit_input
+                entry.task_date = edit_input
 
             if user_input == "b":
                 response = "Update Title:\n>"
                 edit_input = input(response)
 
-                entry.title=edit_input
+                entry.title = edit_input
 
             if user_input == "c":
                 response = "Update Time Spent:\n>"
                 edit_input = input(response)
 
-                entry.time_spent=edit_input
+                entry.time_spent = edit_input
 
             if user_input == "d":
                 response = "Update Notes:\n>"
                 edit_input = input(response)
 
-                entry.notes=edit_input
+                entry.notes = edit_input
 
             if user_input == "e":
                 response = "Update Employee:\n>"
                 edit_input = input(response)
 
-                entry.employee=edit_input
+                entry.employee = edit_input
 
             entry.save()
 
@@ -191,9 +191,10 @@ class InterfaceHelpers:
 
         user_input = ''
         i = 0
+        entries = entries.select().order_by(Task.task_date)
         query_len = entries.count()
 
-        for task in entries.select().order_by(Task.task_date).paginate(1, 1):
+        while user_input.lower() != 'q' and i <= query_len:
             self.clear()
             valid_input = ['q', 'e', 'd']
 
@@ -202,12 +203,12 @@ class InterfaceHelpers:
             else:
                 prompt = "Page through returned tasks. Press (q) to return to menu or (e) to edit.\n\n"
 
-            prompt += self.display_task(task) + "\n"
+            prompt += self.display_task(entries[i]) + "\n"
 
-            if i != 0:
+            if i != 0 and query_len != 1:
                 prompt += "(p)revious\n"
                 valid_input.append('p')
-            if i != query_len - 1:
+            if i != query_len - 1 and query_len != 1:
                 prompt += "(n)ext\n"
                 valid_input.append('n')
 
@@ -215,16 +216,14 @@ class InterfaceHelpers:
 
             while user_input.lower() not in valid_input:
                 self.clear()
-
-                print("Please enter valid input\n")
-                user_input = input(prompt)
+                user_input = input(prompt + "Please enter valid input\n>")
 
             if user_input.lower() == 'p':
                 i -= 1
             elif user_input.lower() == 'd':
-                task.delete_instance()
+                entries[i].delete_instance()
             elif user_input.lower() == 'e':
-                self.edit_task(task)
+                self.edit_task(entries[i])
             else:
                 i += 1
 
@@ -242,7 +241,6 @@ class InterfaceHelpers:
             prompt += str(task.id) + ") " + task.name.title() + "\n"
             valid_input.append(str(task.id))
             valid_input.append(task.name.lower().strip())
-
 
         prompt += "\n> "
 
@@ -276,6 +274,7 @@ class InterfaceHelpers:
 
         return found_tasks
 
+
     def search_dates(self):
         """Displays all dates in database and lets user choose a date to view entries."""
 
@@ -283,11 +282,12 @@ class InterfaceHelpers:
 
         valid_input = ['q']
 
+        prompt = "\nPlease select an task using a date range. Please use DD/MM/YYYY.\n"
+
         for task in dates:
-            print(str(task.id) + ") " + str(task.task_date) + "\n")
+            prompt += str(task.id) + ") " + str(task.task_date) + "\n"
             valid_input.append(str(task.id))
 
-        prompt = "\nPlease select an task using a date range. Please use DD/MM/YYYY.\n"
         prompt += "\nStart date:\n> "
 
         start_date = input(prompt).lower()
@@ -302,8 +302,8 @@ class InterfaceHelpers:
 
         try:
             found_entries = (Task
-                         .select()
-                         .where(Task.task_date.between(start_date, end_date)))
+                             .select()
+                             .where(Task.task_date.between(start_date, end_date)))
         except:
             print("Not a valid range. Please try again or press 'q' to quit ")
 
