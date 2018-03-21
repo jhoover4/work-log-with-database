@@ -37,7 +37,8 @@ class InterfaceHelpers:
         time_spent = input("Time spent (integer of rounded minutes): \n")
         while not HelperFunctions.time_check(time_spent):
             self.clear()
-            time_spent = input("Please use a valid number of minutes: \n")
+            time_spent = input("Time spent (integer of rounded minutes): \n"
+                               "Please use a valid number of minutes: \n")
 
         # task notes
         self.clear()
@@ -130,13 +131,60 @@ class InterfaceHelpers:
     def edit_task(self, entry):
         """UI for user to edit a task."""
 
-        prompt = "What would you like to edit?"
+        user_input = ''
 
-        prompt += "a) Task Date:\n"
-        prompt += "b) Title:\n"
-        prompt += "c) Time Spent:\n"
-        prompt += "d) Notes:\n"
-        prompt += "e) Employee:\n"
+        while user_input.lower() != 'q':
+            self.clear()
+            user_input = ''
+            valid_input = ['q', 'a', 'b', 'c', 'd', 'e']
+
+            prompt = "What would you like to edit?\n\n"
+
+            prompt += "a) Task Date: " + entry.task_date + "\n"
+            prompt += "b) Title: " + entry.title + "\n"
+            prompt += "c) Time Spent: " + str(entry.time_spent) + "\n"
+            prompt += "d) Notes: " + entry.notes + "\n"
+            prompt += "e) Employee: " + entry.employee.name + "\n\n"
+            prompt += ">"
+
+            while user_input.lower() not in valid_input:
+                self.clear()
+
+                print("Please enter valid input\n")
+                user_input = input(prompt)
+
+            response = ''
+            if user_input == "a":
+                response = "Update Task Date:\n>"
+                edit_input = input(response)
+
+                entry.task_date=edit_input
+
+            if user_input == "b":
+                response = "Update Title:\n>"
+                edit_input = input(response)
+
+                entry.title=edit_input
+
+            if user_input == "c":
+                response = "Update Time Spent:\n>"
+                edit_input = input(response)
+
+                entry.time_spent=edit_input
+
+            if user_input == "d":
+                response = "Update Notes:\n>"
+                edit_input = input(response)
+
+                entry.notes=edit_input
+
+            if user_input == "e":
+                response = "Update Employee:\n>"
+                edit_input = input(response)
+
+                entry.employee=edit_input
+
+            entry.save()
 
     def entry_pagination(self, entries):
         """Pages through returned entries for user"""
@@ -151,27 +199,19 @@ class InterfaceHelpers:
 
             if query_len == 1:
                 prompt = "One task returned. Press (q) to return to menu or (e) to edit.\n\n"
-                prompt += self.display_task(entries[i]) + "\n"
-                prompt += "Press any key to return to menu."
-                input(prompt)
-
-                return
-
-            while user_input.lower() != 'q':
-                self.clear()
-                valid_input = ['q', 'e', 'd']
-
+            else:
                 prompt = "Page through returned tasks. Press (q) to return to menu or (e) to edit.\n\n"
-                prompt += self.display_task(task) + "\n"
 
-                if i != 0:
-                    prompt += "(p)revious\n"
-                    valid_input.append('p')
-                if i != query_len - 1:
-                    prompt += "(n)ext\n"
-                    valid_input.append('n')
+            prompt += self.display_task(task) + "\n"
 
-            user_input = input(prompt)
+            if i != 0:
+                prompt += "(p)revious\n"
+                valid_input.append('p')
+            if i != query_len - 1:
+                prompt += "(n)ext\n"
+                valid_input.append('n')
+
+            user_input = input(prompt + ">")
 
             while user_input.lower() not in valid_input:
                 self.clear()
@@ -184,7 +224,7 @@ class InterfaceHelpers:
             elif user_input.lower() == 'd':
                 task.delete_instance()
             elif user_input.lower() == 'e':
-                task.delete_instance()
+                self.edit_task(task)
             else:
                 i += 1
 
@@ -196,23 +236,25 @@ class InterfaceHelpers:
 
         valid_input = ['q']
 
-        for task in employees:
-            print(str(task.id) + ") " + task.name.title() + "\n")
-            valid_input.append(str(task.id))
-            valid_input.append(task.name.lower())
+        prompt = "Please select an employee using the name or id.\n"
 
-        prompt = "\nPlease select an task using the name or id.\n"
-        prompt += "> "
+        for task in employees:
+            prompt += str(task.id) + ") " + task.name.title() + "\n"
+            valid_input.append(str(task.id))
+            valid_input.append(task.name.lower().strip())
+
+
+        prompt += "\n> "
 
         user_input = input(prompt).lower()
-        while user_input not in valid_input:
-            print("Not a valid task. Please choose another option or press 'q' to quit ")
+        while user_input.strip() not in valid_input:
+            print("Not a valid employee. Please choose another option or press 'q' to quit ")
             user_input = input("\n> ")
 
         found_tasks = (Task
                        .select()
                        .join(Employee)
-                       .where(Employee.name == user_input.title()))
+                       .where(Employee.name == user_input.strip().title()))
 
         while isinstance(found_tasks, list):
             # if there are two names that are the same
