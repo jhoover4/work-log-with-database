@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 from helpers import HelperFunctions
 from models import Task, Employee
@@ -72,7 +71,8 @@ class InterfaceHelpers:
 
     def search_task(self):
         """For searching tasks from the csv file.
-        Must have a date, title, time spent, and optional body text"""
+        Must have a date, title, time spent, and optional body text.
+        """
 
         search_ui_input = ['a', 'b', 'c', 'd', 'e', 'f', 'q']
         entries = None
@@ -140,28 +140,27 @@ class InterfaceHelpers:
 
         user_input = ''
 
-        while user_input.lower() != 'q' or user_input.lower() != 'f':
+        while user_input.lower() != 'q':
             self.clear()
-            user_input = ''
-            valid_input = ['q', 'a', 'b', 'c', 'd', 'e', 'f']
 
-            prompt = "What would you like to edit?\n\n"
+            valid_input = ['q', 'a', 'b', 'c', 'd', 'e']
+
+            prompt = "What would you like to edit? Press (q) to return to tasks.\n\n"
 
             prompt += "a) Task Date: " + entry.task_date + "\n"
             prompt += "b) Title: " + entry.title + "\n"
             prompt += "c) Time Spent: " + str(entry.time_spent) + "\n"
             prompt += "d) Notes: " + entry.notes + "\n"
-            prompt += "e) Employee: " + entry.employee.name + "\n"
-            prompt += "f) Return to menu\n\n"
+            prompt += "e) Employee: " + entry.employee.name + "\n\n"
             prompt += ">"
+
+            user_input = input(prompt)
 
             while user_input.lower() not in valid_input:
                 self.clear()
 
-                print("Please enter valid input\n")
-                user_input = input(prompt)
+                user_input = input(prompt + "Please enter valid input\n")
 
-            response = ''
             if user_input == "a":
                 response = "Update Task Date:\n>"
 
@@ -261,7 +260,7 @@ class InterfaceHelpers:
 
         valid_input = ['q']
 
-        prompt = "Please select an employee using the name or id.\n"
+        prompt = "Please select an employee using the name.\n"
 
         for task in employees:
             prompt += str(task.id) + ") " + task.name.title() + "\n"
@@ -299,7 +298,6 @@ class InterfaceHelpers:
                            .where(Employee.name == user_input.title()))
 
         return found_tasks
-
 
     def search_dates(self):
         """Displays all dates in database and lets user choose a date to view entries."""

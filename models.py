@@ -21,7 +21,7 @@ class Task(CustomModel):
     task_date = DateTimeField(default=datetime.now())
     title = CharField(unique=True)
     time_spent = TimeField()
-    notes = TextField()
+    notes = TextField(default='')
     employee = ForeignKeyField(Employee)
 
     class Meta:
