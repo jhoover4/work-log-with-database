@@ -74,7 +74,7 @@ class InterfaceHelpers:
         Must have a date, title, time spent, and optional body text.
         """
 
-        search_ui_input = ['a', 'b', 'c', 'd', 'e', 'f', 'q']
+        search_ui_input = ['a', 'b', 'c', 'd', 'e', 'q']
         entries = None
 
         while True:
@@ -224,9 +224,9 @@ class InterfaceHelpers:
             valid_input = ['q', 'e', 'd']
 
             if query_len == 1:
-                prompt = "One task returned. Press (q) to return to menu or (e) to edit.\n\n"
+                prompt = "One task returned. Press (q) to return to menu, (d) to delete, or (e) to edit.\n\n"
             else:
-                prompt = "Page through returned tasks. Press (q) to return to menu or (e) to edit.\n\n"
+                prompt = "Page through returned tasks. Press (q) to return to menu, (d) to delete, or (e) to edit.\n\n"
 
             prompt += self.display_task(entries[i]) + "\n"
 

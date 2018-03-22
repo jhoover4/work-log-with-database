@@ -1,4 +1,4 @@
-from models import Employee, Task, db
+import models
 from user_interface import InterfaceHelpers
 
 
@@ -6,8 +6,7 @@ def work_log():
     """Command line menu providing an option to either encrypt or decrypt a value.
     Add input settings required to perform the cipher process"""
 
-    db.connect()
-    db.create_tables([Employee, Task])
+    models.initialize_db()
 
     valid_input = ['a', 'b', 'c', 'q']
 
@@ -33,7 +32,7 @@ def work_log():
 
         if user_input.lower() == "c" or user_input.lower() == "q":
             print("Thanks for using work log!\n")
-            db.close()
+            models.db.close()
             break
 
         if user_input.lower() == "a":

@@ -26,3 +26,7 @@ class Task(CustomModel):
 
     class Meta:
         database = db
+
+def initialize_db():
+    db.connect()
+    db.create_tables([Employee, Task], safe=True)
