@@ -24,9 +24,9 @@ class InterfaceHelpers:
 
         while not HelperFunctions.date_check(task_date):
             self.clear()
-            print("Error: {} doesn't seem to be a valid date.\n\n".format(task_date))
+            err_msg = "ERROR: {} isn't a valid date.\n\n".format(task_date)
 
-            task_date = input("Please use DD/MM/YYYY: \n")
+            task_date = input(err_msg + "Please use DD/MM/YYYY: \n")
 
         # task title
         self.clear()
@@ -37,8 +37,9 @@ class InterfaceHelpers:
         time_spent = input("Time spent (integer of rounded minutes): \n")
         while not HelperFunctions.time_check(time_spent):
             self.clear()
-            time_spent = input("Time spent (integer of rounded minutes): \n"
-                               "Please use a valid number of minutes: \n")
+            err_msg = "ERROR: {} isn't a valid number of minutes.\n\n".format(time_spent)
+
+            time_spent = input(err_msg + "Time spent (integer of rounded minutes): \n")
 
         # task notes
         self.clear()
@@ -47,6 +48,12 @@ class InterfaceHelpers:
         # employee
         self.clear()
         employee_input = input("Employee: \n")
+
+        while not employee_input.isalpha():
+            self.clear()
+            err_msg = "ERROR: {} isn't a valid name.\n\n".format(employee_input)
+
+            employee_input = input(err_msg + "Employee: ")
 
         try:
             employee = Employee.get(Employee.name == employee_input)
@@ -133,10 +140,10 @@ class InterfaceHelpers:
 
         user_input = ''
 
-        while user_input.lower() != 'q':
+        while user_input.lower() != 'q' or user_input.lower() != 'f':
             self.clear()
             user_input = ''
-            valid_input = ['q', 'a', 'b', 'c', 'd', 'e']
+            valid_input = ['q', 'a', 'b', 'c', 'd', 'e', 'f']
 
             prompt = "What would you like to edit?\n\n"
 
@@ -144,7 +151,8 @@ class InterfaceHelpers:
             prompt += "b) Title: " + entry.title + "\n"
             prompt += "c) Time Spent: " + str(entry.time_spent) + "\n"
             prompt += "d) Notes: " + entry.notes + "\n"
-            prompt += "e) Employee: " + entry.employee.name + "\n\n"
+            prompt += "e) Employee: " + entry.employee.name + "\n"
+            prompt += "f) Return to menu\n\n"
             prompt += ">"
 
             while user_input.lower() not in valid_input:
@@ -156,7 +164,13 @@ class InterfaceHelpers:
             response = ''
             if user_input == "a":
                 response = "Update Task Date:\n>"
+
                 edit_input = input(response)
+                while not HelperFunctions.date_check(edit_input):
+                    self.clear()
+                    err_msg = "ERROR: {} isn't a valid date.\n\n".format(edit_input)
+
+                    edit_input = input(prompt + response + err_msg)
 
                 entry.task_date = edit_input
 
@@ -170,6 +184,12 @@ class InterfaceHelpers:
                 response = "Update Time Spent:\n>"
                 edit_input = input(response)
 
+                while not HelperFunctions.time_check(edit_input):
+                    self.clear()
+                    err_msg = "ERROR: {} isn't a valid date.\n\n".format(edit_input)
+
+                    edit_input = input(prompt + response + err_msg)
+
                 entry.time_spent = edit_input
 
             if user_input == "d":
@@ -181,6 +201,12 @@ class InterfaceHelpers:
             if user_input == "e":
                 response = "Update Employee:\n>"
                 edit_input = input(response)
+
+                while not edit_input.isalpha():
+                    self.clear()
+                    err_msg = "ERROR: {} isn't a valid name.\n\n".format(edit_input)
+
+                    edit_input = input(prompt + response + err_msg)
 
                 entry.employee = edit_input
 
@@ -295,7 +321,7 @@ class InterfaceHelpers:
         while not HelperFunctions.date_check(start_date) or not HelperFunctions.date_check(end_date):
             self.clear()
 
-            print("Error: {} doesn't seem to be a valid date.\n\n".format(start_date))
+            print("ERROR: {} isn't a valid date.\n\n".format(start_date))
 
             start_date = input(prompt).lower()
             end_date = input("\nEnd date:\n> ").lower()
