@@ -12,47 +12,57 @@ class InterfaceHelpers:
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def add_task(self):
-        """For adding new tasks to the csv file.
-        Must have a date, title, time spent, and optional body text.
-        """
-
-        # task date
+    def input_date(self, msg):
         self.clear()
-        task_date = input("Date of the task (Please use DD/MM/YYYY): \n")
+        task_date = input(msg)
 
         while not HelperFunctions.date_check(task_date):
             self.clear()
             err_msg = "ERROR: {} isn't a valid date.\n\n".format(task_date)
 
-            task_date = input(err_msg + "Please use DD/MM/YYYY: \n")
+            task_date = input(err_msg + msg)
 
-        # task title
-        self.clear()
-        task_title = input("Title of the task: \n")
+        return task_date
 
-        # task time spent
+    def input_time(self, msg):
         self.clear()
-        time_spent = input("Time spent (integer of rounded minutes): \n")
+        time_spent = input(msg)
+
         while not HelperFunctions.time_check(time_spent):
             self.clear()
             err_msg = "ERROR: {} isn't a valid number of minutes.\n\n".format(time_spent)
 
-            time_spent = input(err_msg + "Time spent (integer of rounded minutes): \n")
+            time_spent = input(err_msg + msg)
 
-        # task notes
-        self.clear()
-        notes = input("Notes (Optional, you can leave this empty): \n")
+        return time_spent
 
-        # employee
-        self.clear()
-        employee_input = input("Employee: \n")
+    def input_employee(self, msg):
+        employee_input = input(msg)
 
         while not employee_input.isalpha():
             self.clear()
             err_msg = "ERROR: {} isn't a valid name.\n\n".format(employee_input)
 
-            employee_input = input(err_msg + "Employee: ")
+            employee_input = input(err_msg + msg)
+
+        return employee_input
+
+    def input_text(self, msg):
+        self.clear()
+        notes = input(msg)
+
+        return notes
+
+    def add_task(self):
+        """For adding new tasks to the csv file.
+        Must have a date, title, time spent, and optional body text.
+        """
+
+        task_date = self.input_date("Date of the task (Please use DD/MM/YYYY): \n")
+        task_title = self.input_text("Title of the task: \n")
+        time_spent = self.input_time("Time spent (integer of rounded minutes): \n")
+        notes = self.input_text("Notes (Optional, you can leave this empty): \n")
+        employee_input = self.input_employee("Employee name:\n>")
 
         try:
             employee = Employee.get(Employee.name == employee_input)
@@ -162,52 +172,15 @@ class InterfaceHelpers:
                 user_input = input(prompt + "Please enter valid input\n")
 
             if user_input == "a":
-                response = "Update Task Date:\n>"
-
-                edit_input = input(response)
-                while not HelperFunctions.date_check(edit_input):
-                    self.clear()
-                    err_msg = "ERROR: {} isn't a valid date.\n\n".format(edit_input)
-
-                    edit_input = input(prompt + response + err_msg)
-
-                entry.task_date = edit_input
-
+                entry.task_date = self.input_date("Update Task Date:\n>")
             if user_input == "b":
-                response = "Update Title:\n>"
-                edit_input = input(response)
-
-                entry.title = edit_input
-
+                entry.title = self.input_text("Update Title:\n>")
             if user_input == "c":
-                response = "Update Time Spent:\n>"
-                edit_input = input(response)
-
-                while not HelperFunctions.time_check(edit_input):
-                    self.clear()
-                    err_msg = "ERROR: {} isn't a valid date.\n\n".format(edit_input)
-
-                    edit_input = input(prompt + response + err_msg)
-
-                entry.time_spent = edit_input
-
+                entry.time_spent = self.input_time("Update Time Spent:\n>")
             if user_input == "d":
-                response = "Update Notes:\n>"
-                edit_input = input(response)
-
-                entry.notes = edit_input
-
+                entry.notes = self.input_text("Update Notes:\n>")
             if user_input == "e":
-                response = "Update Employee:\n>"
-                edit_input = input(response)
-
-                while not edit_input.isalpha():
-                    self.clear()
-                    err_msg = "ERROR: {} isn't a valid name.\n\n".format(edit_input)
-
-                    edit_input = input(prompt + response + err_msg)
-
-                entry.employee = edit_input
+                entry.employee = self.input_employee("Update Employee:\n>")
 
             entry.save()
 

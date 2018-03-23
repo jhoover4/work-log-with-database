@@ -1,3 +1,5 @@
+from unittest import TestCase
+
 import unittest
 from unittest.mock import patch
 
@@ -5,6 +7,7 @@ import models
 import helpers
 import user_interface
 import work_log
+
 
 class TaskTests(unittest.TestCase):
 
@@ -86,9 +89,8 @@ class HelpersTests(unittest.TestCase):
         assert helpers.HelperFunctions.time_check('15') is True
 
 
-class InterfaceHelpersTests(unittest.TestCase):
+class TestInterfaceHelpers(unittest.TestCase):
     def setUp(self):
-
         self.user_interface = user_interface.InterfaceHelpers()
 
         self.task_date_input = '06/13/1990'
@@ -96,6 +98,22 @@ class InterfaceHelpersTests(unittest.TestCase):
         self.time_spent_input = 15
         self.notes_input = 'Testing'
         self.employee_input = 'Jordan'
+
+    @patch('builtins.input', return_value='06/13/1990')
+    def test_input_date(self):
+        self.assertEqual(self.user_interface.input_date(), self.task_date_input)
+
+    @patch('builtins.input', return_value=15)
+    def test_input_time(self):
+        self.assertEqual(self.user_interface.input_time(), self.time_spent_input)
+
+    @patch('builtins.input', return_value='Jordan')
+    def test_input_employee(self):
+        self.assertEqual(self.user_interface.input_employee(), self.employee_input)
+
+    @patch('builtins.input', return_value='Test')
+    def test_input_text(self):
+        self.assertEqual(self.user_interface.input_text(), self.title_input)
 
     @patch('builtins.input', return_value='q')
     def test_quit_program(self):
@@ -108,11 +126,6 @@ class InterfaceHelpersTests(unittest.TestCase):
         self.user_interface.search_task()
 
         self.assertTrue(self.user_interface.mock_search_employees.called_with())
-
-    @patch('work-log-with-database.get_input', return_value='no')
-    def test_answer_no(self, input):
-        self.assertEqual(answer(), 'you entered no')
-
 
 if __name__ == '__main__':
     unittest.main()
