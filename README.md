@@ -1,25 +1,30 @@
-# Work Log
+# Work Log with a Database
 
-This is the third project in Treehouse Python tech degree.
+This is the fourth project in Treehouse Python tech degree.
 
-To use run work_log.py
+To use run work_log.py.
+
+To test run tests.py.
 
 ## Description
 
-Develop a terminal application for logging what work someone did on a certain day. The script should ask for a task name, 
-how much time was spent on the task, and any general notes about the task. Record each of these items into a row of a 
-CSV file along with a date.
+Create a command line application that will allow employees to enter their name, time worked, task worked on, 
+and general notes about the task into a database. 
 
-Provide a way for a user to find all of the tasks that were done on a certain date or that match a search string 
-(either as a regular expression or a plain text search). 
-Print a report of this information to the screen, including the date, title of task, time spent, and general notes.
+There should be a way to add a new entry, list all entries for a 
+particular employee, and list all entries that match a date or search term. Print a report of this information to the 
+screen, including the date, title of task, time spent, employee, and general notes.
 
 ## Extra Credit
 
-Implement a one-time pad to secure the cipher.
+- Records can be deleted and edited, 
+letting user change the date, task name, time spent, 
+and/or notes.
+- Can find entries based on a ranges of dates.
+- If multiple employees share a name 
+a list of possible matches is given.
+- Records are displayed one at a time 
+with the ability to page through records (previous/next/back).
+- As a fellow developer of the script, 
+I should see test coverage of 85% of the code or better
 
-A one-time pad is an additional input step 
-required prior to enc or decrypt a message. As long
-as both the sender and receiver use the same pad,
-the message itself becomes secure. Without the pad,
-the message cannot be recovered.
