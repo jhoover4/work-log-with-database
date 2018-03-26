@@ -5,7 +5,7 @@ user_interface = InterfaceHelpers()
 
 
 def main_menu():
-    """Main menu lets user choose between adding or searching entries."""
+    """Menu prompt for main loop of application."""
 
     valid_input = ['a', 'b', 'c', 'q']
 
@@ -28,8 +28,10 @@ def main_menu():
     return user_input.lower()
 
 
-def work_log(menu_choice):
-    """Main loop for the work log application."""
+def main_loop(menu_choice):
+    """Main branches for the application,
+    users can choose to add an entry or search existing entries.
+    """
 
     if menu_choice == "c" or menu_choice.lower() == "q":
         print("Thanks for using work log!\n")
@@ -45,8 +47,16 @@ def work_log(menu_choice):
     return True
 
 
-if __name__ == "__main__":
+def run_work_log():
+    """Set up work_log database and run main loop."""
+
     models.initialize_db()
-    while work_log(main_menu()) is True:
-        work_log(main_menu())
+
+    while main_loop(main_menu()) is True:
+        main_loop(main_menu())
+
     models.db.close()
+
+
+if __name__ == "__main__":
+    run_work_log()

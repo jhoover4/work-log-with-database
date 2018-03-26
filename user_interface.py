@@ -79,38 +79,42 @@ class InterfaceHelpers:
         self.clear()
         input("The task has been added! Press any key to return to the menu\n")
 
+    def task_submenu(self, display_text):
+        """Used as a menu for both editing and searching tasks."""
+
+        valid_input = ['a', 'b', 'c', 'd', 'e', 'q']
+        self.clear()
+
+        user_input = str(input(display_text)).strip()
+
+        while user_input not in valid_input:
+            self.clear()
+            user_input = str(input(display_text + "Please enter valid input\n")).strip()
+
+        return user_input
+
     def search_task(self):
         """For searching tasks from the csv file.
         Must have a date, title, time spent, and optional body text.
         """
 
-        search_ui_input = ['a', 'b', 'c', 'd', 'e', 'q']
         entries = None
 
+        prompt = "Do you want to search by:\n\n"
+        prompt += "a) Employee\n"
+        prompt += "b) Task Date Range\n"
+        prompt += "c) Task Time Spent\n"
+        prompt += "d) Search Term\n"
+        prompt += "e) Return to Menu\n\n"
+        prompt += "> "
+
         while True:
-            self.clear()
-
-            prompt = "Do you want to search by:\n\n"
-            prompt += "a) Employee\n"
-            prompt += "b) Task Date Range\n"
-            prompt += "c) Task Time Spent\n"
-            prompt += "d) Search Term\n"
-            prompt += "e) Return to Menu\n\n"
-            prompt += "> "
-
-            user_input = str(input(prompt)).strip()
-
-            while user_input not in search_ui_input:
-                self.clear()
-
-                print(prompt)
-                user_input = str(input("Please enter valid input\n")).strip()
+            user_input = self.task_submenu(prompt)
 
             if user_input.lower() == "e":
                 break
 
             self.clear()
-
             if user_input.lower() == "a":
                 entries = self.search_employees()
 
@@ -150,27 +154,16 @@ class InterfaceHelpers:
         """UI for user to edit a task."""
 
         user_input = ''
+        prompt = "What would you like to edit? Press (q) to return to tasks.\n\n"
+        prompt += "a) Task Date: " + entry.task_date + "\n"
+        prompt += "b) Title: " + entry.title + "\n"
+        prompt += "c) Time Spent: " + str(entry.time_spent) + "\n"
+        prompt += "d) Notes: " + entry.notes + "\n"
+        prompt += "e) Employee: " + entry.employee.name + "\n\n"
+        prompt += ">"
 
         while user_input.lower() != 'q':
-            self.clear()
-
-            valid_input = ['q', 'a', 'b', 'c', 'd', 'e']
-
-            prompt = "What would you like to edit? Press (q) to return to tasks.\n\n"
-
-            prompt += "a) Task Date: " + entry.task_date + "\n"
-            prompt += "b) Title: " + entry.title + "\n"
-            prompt += "c) Time Spent: " + str(entry.time_spent) + "\n"
-            prompt += "d) Notes: " + entry.notes + "\n"
-            prompt += "e) Employee: " + entry.employee.name + "\n\n"
-            prompt += ">"
-
-            user_input = input(prompt)
-
-            while user_input.lower() not in valid_input:
-                self.clear()
-
-                user_input = input(prompt + "Please enter valid input\n")
+            user_input = self.task_submenu(prompt)
 
             if user_input == "a":
                 entry.task_date = self.input_date("Update Task Date:\n>")
