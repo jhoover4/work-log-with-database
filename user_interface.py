@@ -1,7 +1,7 @@
 import os
 
 from helpers import HelperFunctions
-from models import Task, Employee
+import models
 
 
 class InterfaceHelpers:
@@ -65,11 +65,11 @@ class InterfaceHelpers:
         employee_input = self.input_employee("Employee name:\n>")
 
         try:
-            employee = Employee.get(Employee.name == employee_input)
-        except:
-            employee = Employee.create(name=employee_input)
+            employee = models.Employee.get(models.Employee.name == employee_input)
+        except models.DoesNotExist:
+            employee = models.Employee.create(name=employee_input)
 
-        Task.create(
+        models.Task.create(
             task_date=task_date,
             title=task_title,
             time_spent=time_spent,
@@ -120,28 +120,29 @@ class InterfaceHelpers:
             if user_input.lower() == "c":
                 task_time_spent = input("Search by task time spent: \n")
 
-                entries = Task.select().where(Task.time_spent == task_time_spent)
+                entries = models.Task.select().where(models.Task.time_spent == task_time_spent)
 
             if user_input.lower() == "d":
                 task_title = input("Search by task title or notes: \n")
 
-                entries = Task.select().where((Task.title == task_title) | (Task.notes == task_title))
+                entries = models.Task.select().where((models.Task.title == task_title)
+                                                     | (models.Task.notes == task_title))
 
             if entries is None:
                 print("No entries available\n\n")
             else:
                 self.entry_pagination(entries)
 
-    def display_task(self, entry):
+    def display_task(self, task):
         """Displays task data for user."""
 
         text = ""
 
-        text += 'Task Date: ' + entry.task_date + "\n"
-        text += 'Title: ' + entry.title + "\n"
-        text += 'Time Spent: ' + str(entry.time_spent) + "\n"
-        text += 'Notes: ' + entry.notes + "\n"
-        text += 'Employee: ' + entry.employee.name + "\n"
+        text += 'Task Date: ' + task.task_date + "\n"
+        text += 'Title: ' + task.title + "\n"
+        text += 'Time Spent: ' + str(task.time_spent) + "\n"
+        text += 'Notes: ' + task.notes + "\n"
+        text += 'Employee: ' + task.employee.name + "\n"
 
         return text
 
@@ -189,7 +190,7 @@ class InterfaceHelpers:
 
         user_input = ''
         i = 0
-        entries = entries.select().order_by(Task.task_date)
+        entries = entries.select().order_by(models.Task.task_date)
         query_len = entries.count()
 
         while user_input.lower() != 'q' and i <= query_len:
@@ -229,7 +230,7 @@ class InterfaceHelpers:
     def search_employees():
         """Displays all employees in database and lets user view entries of selected employee."""
 
-        employees = Employee.select()
+        employees = models.Employee.select()
 
         valid_input = ['q']
 
@@ -247,10 +248,10 @@ class InterfaceHelpers:
             print("Not a valid employee. Please choose another option or press 'q' to quit ")
             user_input = input("\n> ")
 
-        found_tasks = (Task
+        found_tasks = (models.Task
                        .select()
-                       .join(Employee)
-                       .where(Employee.name == user_input.strip().title()))
+                       .join(models.Employee)
+                       .where(models.Employee.name == user_input.strip().title()))
 
         while isinstance(found_tasks, list):
             # if there are two names that are the same
@@ -265,17 +266,17 @@ class InterfaceHelpers:
                 print("Not a valid task. Please choose another option or press 'q' to quit ")
                 user_input = input("\n> ")
 
-            found_tasks = (Task
+            found_tasks = (models.Task
                            .select()
-                           .join(Employee)
-                           .where(Employee.name == user_input.title()))
+                           .join(models.Employee)
+                           .where(models.Employee.name == user_input.title()))
 
         return found_tasks
 
     def search_dates(self):
         """Displays all dates in database and lets user choose a date to view entries."""
 
-        dates = Task.select()
+        dates = models.Task.select()
 
         valid_input = ['q']
 
@@ -298,10 +299,10 @@ class InterfaceHelpers:
             end_date = input("\nEnd date:\n> ").lower()
 
         try:
-            found_entries = (Task
+            found_entries = (models.Task
                              .select()
-                             .where(Task.task_date.between(start_date, end_date)))
-        except:
+                             .where(models.Task.task_date.between(start_date, end_date)))
+        except models.DoesNotExist:
             print("Not a valid range. Please try again or press 'q' to quit ")
 
             found_entries = self.search_dates()
