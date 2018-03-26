@@ -1,7 +1,8 @@
-from unittest import TestCase
-
 import unittest
 from unittest.mock import patch
+from unittest import mock
+import io
+import sys
 
 import models
 import helpers
@@ -9,11 +10,11 @@ import user_interface
 import work_log
 
 
+
 class TaskTests(unittest.TestCase):
 
     def setUp(self):
         models.initialize_db()
-
         self.task_date = '06/13/1990'
         self.title = 'Test'
         self.time_spent = 15
@@ -32,7 +33,7 @@ class TaskTests(unittest.TestCase):
     def tearDown(self):
         try:
             self.test_task.delete_instance()
-        except:
+        except models.DoesNotExist:
             pass
 
         models.db.close()
@@ -77,7 +78,6 @@ class TaskTests(unittest.TestCase):
 class EmployeeTests(unittest.TestCase):
     pass
 
-
 class HelpersTests(unittest.TestCase):
 
     def test_date_check(self):
@@ -89,43 +89,91 @@ class HelpersTests(unittest.TestCase):
         assert helpers.HelperFunctions.time_check('15') is True
 
 
-class TestInterfaceHelpers(unittest.TestCase):
+class WorkLogTests(unittest.TestCase):
+
+    @patch('builtins.input')
+    def test_main_menu(self, mock):
+        mock.side_effect = ['a']
+        self.assertEqual(work_log.main_menu(), 'a')
+
+    def test_work_log_end_loop(self):
+        self.assertEqual(work_log.work_log('q'), False)
+        self.assertEqual(work_log.work_log('c'), False)
+
+    @patch.object(user_interface.InterfaceHelpers, 'add_task')
+    def test_work_log_add_task(self, mock):
+        work_log.work_log('a')
+        self.assertTrue(mock.called)
+
+    @patch.object(user_interface.InterfaceHelpers, 'search_task')
+    def test_work_log_search_task(self, mock):
+        work_log.work_log('b')
+        self.assertTrue(mock.called)
+
+
+class InterfaceHelpersTests(unittest.TestCase):
     def setUp(self):
-        self.user_interface = user_interface.InterfaceHelpers()
+        models.initialize_db()
+        self.ui_obj = user_interface.InterfaceHelpers()
 
         self.task_date_input = '06/13/1990'
         self.title_input = 'Test'
-        self.time_spent_input = 15
+        self.time_spent_input = '15'
         self.notes_input = 'Testing'
         self.employee_input = 'Jordan'
 
-    @patch('builtins.input', return_value='06/13/1990')
-    def test_input_date(self):
-        self.assertEqual(self.user_interface.input_date(), self.task_date_input)
+        try:
+            self.employee = models.Employee.get(models.Employee.name == 'Jordan')
+        except:
+            self.employee = models.Employee.create(name='Jordan')
 
-    @patch('builtins.input', return_value=15)
-    def test_input_time(self):
-        self.assertEqual(self.user_interface.input_time(), self.time_spent_input)
+        self.test_task = models.Task.create(
+            task_date=self.task_date_input,
+            title=self.title_input,
+            time_spent=self.notes_input,
+            employee=self.employee)
 
-    @patch('builtins.input', return_value='Jordan')
-    def test_input_employee(self):
-        self.assertEqual(self.user_interface.input_employee(), self.employee_input)
+    def tearDown(self):
+        try:
+            self.test_task.delete_instance()
+        except models.DoesNotExist:
+            pass
 
-    @patch('builtins.input', return_value='Test')
-    def test_input_text(self):
-        self.assertEqual(self.user_interface.input_text(), self.title_input)
+        models.db.close()
 
-    @patch('builtins.input', return_value='q')
-    def test_quit_program(self):
-        work_log.work_log()
+    @patch('builtins.input')
+    def test_input_date(self, mock):
+        mock.side_effect = ['06/13/199']
+        mock.side_effect = ['06/13/1990']
+        self.assertEqual(self.ui_obj.input_date(''), self.task_date_input)
 
-        self.assertRaises(SystemExit)
+    @patch('builtins.input')
+    def test_input_time(self, mock):
+        mock.side_effect = [15]
+        mock.side_effect = ['1000']
+        mock.side_effect = ['15']
+        self.assertEqual(self.ui_obj.input_time(''), self.time_spent_input)
 
-    @patch('builtins.input', return_value='a')
-    def test_search_task(self, mock_search_employees):
-        self.user_interface.search_task()
+    @patch('builtins.input')
+    def test_input_employee(self, mock):
+        mock.side_effect = [1]
+        mock.side_effect = ['Jordan']
+        self.assertEqual(self.ui_obj.input_employee(''), self.employee_input)
 
-        self.assertTrue(self.user_interface.mock_search_employees.called_with())
+    @patch('builtins.input')
+    def test_input_text(self, mock):
+        mock.side_effect = ['Test']
+        self.assertEqual(self.ui_obj.input_text(''), self.title_input)
+
+    def test_display_task(self):
+        text = ""
+        text += "Task Date: 06/13/1990\n"
+        text += "Title: Test\n"
+        text += "Time Spent: 15\n"
+        text += "Notes: Testing\n"
+        text += "Employee: Jordan\n"
+
+        self.assertEqual(text, self.ui_obj.display_task(self.test_task))
 
 if __name__ == '__main__':
     unittest.main()
