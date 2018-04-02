@@ -4,6 +4,7 @@ from user_interface import InterfaceHelpers
 user_interface = InterfaceHelpers()
 
 
+
 def main_menu():
     """Menu prompt for main loop of application."""
 
@@ -20,10 +21,7 @@ def main_menu():
     user_input = str(input(prompt)).strip()
 
     while user_input not in valid_input:
-        user_interface.clear()
-
-        print(prompt)
-        user_input = str(input("Please enter valid input\n")).strip()
+        user_input = user_interface.ask_for_valid_input(prompt)
 
     return user_input.lower()
 
@@ -42,7 +40,7 @@ def main_loop(menu_choice):
         user_interface.add_task()
 
     if menu_choice == "b":
-        user_interface.search_task()
+        user_interface.search_task_menu()
 
     return True
 

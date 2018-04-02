@@ -12,15 +12,24 @@ class InterfaceHelpers:
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    def ask_for_valid_input(self, prompt, add_quit=False):
+        self.clear()
+
+        if add_quit:
+            new_prompt = prompt + "\nPlease enter valid input. Press q to quit.\n>"
+        else:
+            new_prompt = prompt + "\nPlease enter valid input.\n>"
+
+        user_input = input(new_prompt).strip().lower()
+
+        return user_input
+
     def input_date(self, msg):
         self.clear()
         task_date = input(msg)
 
         while not HelperFunctions.date_check(task_date):
-            self.clear()
-            err_msg = "ERROR: {} isn't a valid date.\n\n".format(task_date)
-
-            task_date = input(err_msg + msg)
+            task_date = self.ask_for_valid_input(msg)
 
         return task_date
 
@@ -29,10 +38,7 @@ class InterfaceHelpers:
         time_spent = input(msg)
 
         while not HelperFunctions.time_check(time_spent):
-            self.clear()
-            err_msg = "ERROR: {} isn't a valid number of minutes.\n\n".format(time_spent)
-
-            time_spent = input(err_msg + msg)
+            time_spent = self.ask_for_valid_input(msg)
 
         return time_spent
 
@@ -40,10 +46,7 @@ class InterfaceHelpers:
         employee_input = input(msg)
 
         while not employee_input.isalpha():
-            self.clear()
-            err_msg = "ERROR: {} isn't a valid name.\n\n".format(employee_input)
-
-            employee_input = input(err_msg + msg)
+            employee_input = self.ask_for_valid_input(msg)
 
         return employee_input
 
@@ -88,17 +91,14 @@ class InterfaceHelpers:
         user_input = str(input(display_text)).strip()
 
         while user_input not in valid_input:
-            self.clear()
-            user_input = str(input(display_text + "Please enter valid input\n")).strip()
+            user_input = self.ask_for_valid_input(display_text)
 
         return user_input
 
-    def search_task(self):
+    def search_task_menu(self):
         """For searching tasks from the csv file.
         Must have a date, title, time spent, and optional body text.
         """
-
-        entries = None
 
         prompt = "Do you want to search by:\n\n"
         prompt += "a) Employee\n"
@@ -108,34 +108,39 @@ class InterfaceHelpers:
         prompt += "e) Return to Menu\n\n"
         prompt += "> "
 
-        while True:
-            user_input = self.task_submenu(prompt)
+        while self.search_task(self.task_submenu(prompt)) is True:
+            self.search_task(self.task_submenu(prompt))
 
-            if user_input.lower() == "e":
-                break
+    def search_task(self, menu_choice):
+        entries = None
 
-            self.clear()
-            if user_input.lower() == "a":
-                entries = self.search_employees()
+        if menu_choice.lower() == "e":
+            return False
 
-            if user_input.lower() == "b":
-                entries = self.search_dates()
+        self.clear()
+        if menu_choice.lower() == "a":
+            entries = self.search_employees()
 
-            if user_input.lower() == "c":
-                task_time_spent = input("Search by task time spent: \n")
+        if menu_choice.lower() == "b":
+            entries = self.search_dates()
 
-                entries = models.Task.select().where(models.Task.time_spent == task_time_spent)
+        if menu_choice.lower() == "c":
+            task_time_spent = input("Search by task time spent: \n")
 
-            if user_input.lower() == "d":
-                task_title = input("Search by task title or notes: \n")
+            entries = models.Task.select().where(models.Task.time_spent == task_time_spent)
 
-                entries = models.Task.select().where((models.Task.title == task_title)
-                                                     | (models.Task.notes == task_title))
+        if menu_choice.lower() == "d":
+            task_title = input("Search by task title or notes: \n")
 
-            if entries is None:
-                print("No entries available\n\n")
-            else:
-                self.entry_pagination(entries)
+            entries = models.Task.select().where((models.Task.title == task_title)
+                                                 | (models.Task.notes == task_title))
+
+        if entries is None:
+            print("No entries available.\n\n")
+        else:
+            self.entry_pagination(entries)
+
+        return True
 
     def display_task(self, task):
         """Displays task data for user."""
@@ -150,7 +155,7 @@ class InterfaceHelpers:
 
         return text
 
-    def edit_task(self, entry):
+    def edit_task_menu(self, entry):
         """UI for user to edit a task."""
 
         user_input = ''
@@ -164,19 +169,22 @@ class InterfaceHelpers:
 
         while user_input.lower() != 'q':
             user_input = self.task_submenu(prompt)
+            self.edit_task(user_input, entry)
 
-            if user_input == "a":
-                entry.task_date = self.input_date("Update Task Date:\n>")
-            if user_input == "b":
-                entry.title = self.input_text("Update Title:\n>")
-            if user_input == "c":
-                entry.time_spent = self.input_time("Update Time Spent:\n>")
-            if user_input == "d":
-                entry.notes = self.input_text("Update Notes:\n>")
-            if user_input == "e":
-                entry.employee = self.input_employee("Update Employee:\n>")
+    def edit_task(self, menu_choice, entry):
 
-            entry.save()
+        if menu_choice == "a":
+            entry.task_date = self.input_date("Update Task Date:\n>")
+        if menu_choice == "b":
+            entry.title = self.input_text("Update Title:\n>")
+        if menu_choice == "c":
+            entry.time_spent = self.input_time("Update Time Spent:\n>")
+        if menu_choice == "d":
+            entry.notes = self.input_text("Update Notes:\n>")
+        if menu_choice == "e":
+            entry.employee = self.input_employee("Update Employee:\n>")
+
+        entry.save()
 
     def entry_pagination(self, entries):
         """Pages through returned entries for user"""
@@ -215,31 +223,74 @@ class InterfaceHelpers:
             elif user_input.lower() == 'd':
                 entries[i].delete_instance()
             elif user_input.lower() == 'e':
-                self.edit_task(entries[i])
+                self.edit_task_menu(entries[i])
             else:
                 i += 1
 
-    @staticmethod
-    def search_employees():
+    def list_items(self, prompt, items):
+
+        is_employee = (items.model.__name__ == 'Employee')
+
+        if len(items) < 1:
+            prompt = "No items available."
+
+        if len(items) == 1:
+            prompt += str(items[0].id) + ") "
+            if is_employee:
+                prompt += items[0].name.title() + "\n"
+            else:
+                prompt += items[0].title.title() + "\n"
+        else:
+            for item in items:
+                prompt += str(item.id) + ") "
+                if is_employee:
+                    prompt += item.name.title() + "\n"
+                else:
+                    prompt += item.title.title() + "\n"
+
+        return prompt
+
+    def add_valid_input(self, items):
+        valid_input = ['q']
+
+        for item in items:
+            valid_input.append(str(item.id))
+            if (items.model.__name__ == 'Employee'):
+                valid_input.append(item.name.lower().strip())
+            else:
+                valid_input.append(item.title.lower().strip())
+
+        return valid_input
+
+    def multiple_tasks(self, tasks):
+        """If there are two names that are the same."""
+
+        prompt = self.list_items('Multiple matches found. Please choose a correct match.\n', tasks)
+        prompt += "\n> "
+        valid_input = self.add_valid_input(tasks)
+
+        user_input = input(prompt)
+        while user_input not in valid_input:
+            user_input = self.ask_for_valid_input(prompt)
+
+        found_tasks = (models.Task
+                       .select()
+                       .join(models.Employee)
+                       .where(models.Employee.name == user_input.title()))
+
+        return found_tasks
+
+    def search_employees(self):
         """Displays all employees in database and lets user view entries of selected employee."""
 
         employees = models.Employee.select()
-
-        valid_input = ['q']
-
-        prompt = "Please select an employee using the name.\n"
-
-        for task in employees:
-            prompt += str(task.id) + ") " + task.name.title() + "\n"
-            valid_input.append(str(task.id))
-            valid_input.append(task.name.lower().strip())
-
+        prompt = self.list_items(employees)
         prompt += "\n> "
+        valid_input = self.add_valid_input('Multiple matches found. Please choose a correct match.\n', employees)
 
         user_input = input(prompt).lower()
         while user_input.strip() not in valid_input:
-            print("Not a valid employee. Please choose another option or press 'q' to quit ")
-            user_input = input("\n> ")
+            user_input = self.ask_for_valid_input(prompt)
 
         found_tasks = (models.Task
                        .select()
@@ -247,49 +298,26 @@ class InterfaceHelpers:
                        .where(models.Employee.name == user_input.strip().title()))
 
         while isinstance(found_tasks, list):
-            # if there are two names that are the same
-            print("Multiple matches found. Please choose a correct match.\n")
-
-            for task in found_tasks:
-                print(task.id + ") " + task.name.title() + "\n")
-                valid_input.append(str(task.id))
-                valid_input.append(task.name.lower())
-
-            while user_input not in valid_input:
-                print("Not a valid task. Please choose another option or press 'q' to quit ")
-                user_input = input("\n> ")
-
-            found_tasks = (models.Task
-                           .select()
-                           .join(models.Employee)
-                           .where(models.Employee.name == user_input.title()))
+            found_tasks = self.multiple_tasks(found_tasks)
 
         return found_tasks
 
     def search_dates(self):
         """Displays all dates in database and lets user choose a date to view entries."""
 
-        dates = models.Task.select()
+        tasks = models.Task.select()
 
-        valid_input = ['q']
+        prompt = self.list_items("\nSelect a task using a date range. Please use DD/MM/YYYY.", tasks)
+        start_date_prompt = prompt + "\nStart date:\n> "
+        end_date_prompt = prompt + "\nEnd date:\n> "
+        valid_input = self.add_valid_input(tasks)
 
-        prompt = "\nPlease select an task using a date range. Please use DD/MM/YYYY.\n"
-
-        for task in dates:
-            prompt += str(task.id) + ") " + str(task.task_date) + "\n"
-            valid_input.append(str(task.id))
-
-        prompt += "\nStart date:\n> "
-
-        start_date = input(prompt).lower()
-        end_date = input("\nEnd date:\n> ").lower()
-        while not HelperFunctions.date_check(start_date) or not HelperFunctions.date_check(end_date):
-            self.clear()
-
-            print("ERROR: {} isn't a valid date.\n\n".format(start_date))
-
-            start_date = input(prompt).lower()
-            end_date = input("\nEnd date:\n> ").lower()
+        start_date = self.input_date(start_date_prompt)
+        while start_date.strip() not in valid_input:
+            start_date = self.input_date(start_date_prompt)
+        end_date = self.input_date(end_date_prompt)
+        while end_date.strip() not in valid_input:
+            end_date = self.input_date(end_date_prompt)
 
         try:
             found_entries = (models.Task
