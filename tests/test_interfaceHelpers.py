@@ -18,7 +18,7 @@ class TestInterfaceHelpers(unittest.TestCase):
 
         try:
             self.employee = models.Employee.get(models.Employee.name == 'Jordan')
-        except:
+        except models.DoesNotExist:
             self.employee = models.Employee.create(name='Jordan')
 
         self.test_task = models.Task.create(
@@ -31,10 +31,15 @@ class TestInterfaceHelpers(unittest.TestCase):
     def tearDown(self):
         try:
             self.test_task.delete_instance()
+            new_model = models.Task.get(models.Task.title == 'Test2')
+            new_model.delete_instance()
         except models.DoesNotExist:
             pass
 
-        models.db.close()
+        try:
+            models.db.close()
+        except models.OperationalError:
+            pass
 
     @patch('builtins.input')
     def test_input_date(self, mock):
@@ -67,6 +72,44 @@ class TestInterfaceHelpers(unittest.TestCase):
         mock.side_effect = ['test']
         self.assertEqual(self.ui_obj.ask_for_valid_input('', add_quit=True), 'test')
 
+    @patch('builtins.input')
+    def test_add_task(self, mock):
+        mock.side_effect = ['06/14/1990', 'Test2', '13', 'These are notes. ', self.employee.name, 'q']
+        self.ui_obj.add_task()
+
+        try:
+            models.Task.get(models.Task.title == 'Test2')
+        except models.DoesNotExist:
+            self.fail("Couldn't find inputted task.")
+
+    # @patch('builtins.input', return_value="\nPlease enter valid input.\n>")
+    # def test_task_submenu(self, mock):
+    #     mock.side_effect = ['2']
+    #
+    #     self.ui_obj.task_submenu('')
+
+    @patch('builtins.input')
+    def test_task_submenu(self, mock):
+        mock.side_effect = ['a']
+
+        self.assertEqual('a', self.ui_obj.task_submenu(''))
+
+    @patch('builtins.input')
+    def test_search_task_menu(self, mock):
+        mock.side_effect = ['e']
+
+        self.assertFalse(self.ui_obj.search_task_menu())
+
+    @patch('builtins.input')
+    def test_edit_task(self, mock):
+        mock.side_effect = ['06/14/1990', 'Test2', '13', 'These are notes. ', self.employee.name, 'q']
+        self.ui_obj.add_task()
+
+        try:
+            models.Task.get(models.Task.title == 'Test2')
+        except models.DoesNotExist:
+            self.fail("Couldn't find inputted task.")
+
     @patch.object(user_interface.InterfaceHelpers, 'search_employees')
     def test_search_task_employees(self, mock):
         mock.side_effect = ['Jordan']
@@ -75,8 +118,21 @@ class TestInterfaceHelpers(unittest.TestCase):
 
     @patch.object(user_interface.InterfaceHelpers, 'search_dates')
     def test_search_task_dates(self, mock):
+        mock.side_effect = ['q']
         self.ui_obj.search_task('b')
         self.assertTrue(mock.called)
+
+    @patch.object(user_interface.InterfaceHelpers, 'entry_pagination')
+    def test_search_task_time(self, mock_ui):
+        with patch('builtins.input') as mock_input:
+            mock_input.side_effect = ['15']
+            self.ui_obj.search_task('c')
+            self.assertTrue(mock_ui.called)
+
+    @patch('builtins.input')
+    def test_search_task_return(self, mock):
+        mock.side_effect = ['words not in a task']
+        self.assertTrue(self.ui_obj.search_task('d'))
 
     def test_search_task_quit(self):
         self.assertEqual(self.ui_obj.search_task('e'), False)

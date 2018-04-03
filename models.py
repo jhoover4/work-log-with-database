@@ -28,5 +28,9 @@ class Task(CustomModel):
         database = db
 
 def initialize_db():
-    db.connect()
+    try:
+        db.connect()
+    except OperationalError:
+        pass
+
     db.create_tables([Employee, Task], safe=True)

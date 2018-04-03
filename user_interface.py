@@ -135,10 +135,10 @@ class InterfaceHelpers:
             entries = models.Task.select().where((models.Task.title == task_title)
                                                  | (models.Task.notes == task_title))
 
-        if entries is None:
-            print("No entries available.\n\n")
-        else:
+        if entries:
             self.entry_pagination(entries)
+        else:
+            print("No entries available.\n\n")
 
         return True
 
@@ -255,7 +255,7 @@ class InterfaceHelpers:
 
         for item in items:
             valid_input.append(str(item.id))
-            if (items.model.__name__ == 'Employee'):
+            if items.model.__name__ == 'Employee':
                 valid_input.append(item.name.lower().strip())
             else:
                 valid_input.append(item.title.lower().strip())
@@ -284,9 +284,9 @@ class InterfaceHelpers:
         """Displays all employees in database and lets user view entries of selected employee."""
 
         employees = models.Employee.select()
-        prompt = self.list_items(employees)
+        prompt = self.list_items('Please select an employee using the name.\n', employees)
         prompt += "\n> "
-        valid_input = self.add_valid_input('Multiple matches found. Please choose a correct match.\n', employees)
+        valid_input = self.add_valid_input(employees)
 
         user_input = input(prompt).lower()
         while user_input.strip() not in valid_input:

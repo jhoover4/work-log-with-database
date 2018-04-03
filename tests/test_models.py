@@ -16,11 +16,14 @@ class TestTask(unittest.TestCase):
         except models.DoesNotExist:
             self.employee = models.Employee.create(name='Jordan')
 
-        self.test_task = models.Task.create(
-            task_date=self.task_date,
-            title=self.title,
-            time_spent=self.time_spent,
-            employee=self.employee)
+        try:
+            self.test_task = models.Task.get(models.Task.title == self.title)
+        except models.DoesNotExist:
+            self.test_task = models.Task.create(
+                task_date=self.task_date,
+                title=self.title,
+                time_spent=self.time_spent,
+                employee=self.employee)
 
     def tearDown(self):
         try:
@@ -28,7 +31,10 @@ class TestTask(unittest.TestCase):
         except models.DoesNotExist:
             pass
 
-        models.db.close()
+        try:
+            models.db.close()
+        except models.OperationalError:
+            pass
 
     def test_check_entry_table(self):
         assert models.Task.table_exists()
