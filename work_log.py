@@ -1,8 +1,9 @@
 import models
-from user_interface import InterfaceHelpers
+from user_interface import UserInterface
+from add_task import AddTask
+from search_task import SearchTask
 
-user_interface = InterfaceHelpers()
-
+user_interface = UserInterface()
 
 
 def main_menu():
@@ -37,10 +38,12 @@ def main_loop(menu_choice):
         return False
 
     if menu_choice == "a":
-        user_interface.add_task()
+        add_task = AddTask()
+        add_task.add_task_ui()
 
     if menu_choice == "b":
-        user_interface.search_task_menu()
+        search_task = SearchTask()
+        search_task.search_task_ui()
 
     return True
 
