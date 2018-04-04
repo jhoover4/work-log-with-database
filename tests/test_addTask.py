@@ -12,13 +12,13 @@ class TestAddTask(unittest.TestCase):
         self.ui_obj = AddTask()
 
     def tearDown(self):
-        try:
-            new_model = models.Task.get(models.Task.title == 'Test2')
-            new_model.delete_instance()
-            new_employee = models.Employee.get(models.Employee.name == 'Nirvana')
-            new_employee.delete_instance()
-        except models.DoesNotExist:
-            pass
+        tasks = models.Task.select()
+        for task in tasks:
+            task.delete_instance()
+
+        employees = models.Employee.select()
+        for employee in employees:
+            employee.delete_instance()
 
         try:
             models.db.close()

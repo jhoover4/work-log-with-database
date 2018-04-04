@@ -124,14 +124,9 @@ class SearchTask(UserInterface):
         prompt = self.list_items("\nSelect a task using a date range. Please use DD/MM/YYYY.", tasks)
         start_date_prompt = prompt + "\nStart date:\n> "
         end_date_prompt = prompt + "\nEnd date:\n> "
-        valid_input = self.add_valid_input(tasks)
 
         start_date = self.input_date(start_date_prompt)
-        while start_date.strip() not in valid_input:
-            start_date = self.input_date(start_date_prompt)
         end_date = self.input_date(end_date_prompt)
-        while end_date.strip() not in valid_input:
-            end_date = self.input_date(end_date_prompt)
 
         try:
             found_entries = (models.Task
@@ -192,6 +187,7 @@ class SearchTask(UserInterface):
 
         for item in items:
             valid_input.append(str(item.id))
+
             if items.model.__name__ == 'Employee':
                 valid_input.append(item.name.lower().strip())
             else:

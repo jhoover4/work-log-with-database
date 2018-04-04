@@ -33,8 +33,6 @@ class TestSearchTask(unittest.TestCase):
     def tearDown(self):
         try:
             self.test_task.delete_instance()
-            new_model = models.Task.get(models.Task.title == 'Test2')
-            new_model.delete_instance()
         except models.DoesNotExist:
             pass
 
@@ -49,33 +47,30 @@ class TestSearchTask(unittest.TestCase):
 
         self.assertFalse(self.ui_obj.search_task_ui())
 
-    @patch.object(SearchTask, 'search_employees')
-    def test_search_task_employees(self, mock):
-        mock.side_effect = ['Jordan']
-        self.ui_obj.search_task_options('a')
-        self.assertTrue(mock.called)
-
-    @patch.object(SearchTask, 'search_dates')
-    def test_search_task_dates(self, mock_ui):
+    @patch.object(SearchTask, 'search_task_options')
+    def test_search_task_ui_loop(self, mock_ui):
         with patch('builtins.input') as mock_input:
-            mock_input.side_effect = ['06/13/1990']
-            self.ui_obj.search_task_options('b')
-            self.assertTrue(mock_ui.called)
-
-    @patch.object(SearchTask, 'entry_pagination')
-    def test_search_task_time(self, mock_ui):
-        with patch('builtins.input') as mock_input:
-            mock_input.side_effect = ['15']
-            self.ui_obj.search_task_options('c')
+            mock_input.side_effect = ['wrong input', 'e']
+            self.ui_obj.search_task_ui()
             self.assertTrue(mock_ui.called)
 
     @patch('builtins.input')
-    def test_search_task_return(self, mock):
-        mock.side_effect = ['words not in a task']
-        self.assertTrue(self.ui_obj.search_task_options('d'))
+    def test_search_employees(self, mock):
+        mock.side_effect = ['234', 'Jordan']
+        task = models.Task.get(title='Test')
 
-    def test_search_task_quit(self):
-        self.assertEqual(self.ui_obj.search_task_options('e'), False)
+        returned_task = self.ui_obj.search_employees()[0]
+
+        self.assertEqual(task.title, returned_task.title)
+
+    @patch('builtins.input')
+    def test_search_dates(self, mock):
+        mock.side_effect = ['1', '06/12/1990', '06/14/1990']
+        task = models.Task.get(title='Test')
+
+        returned_task = self.ui_obj.search_dates()[0]
+
+        self.assertEqual(task.title, returned_task.title)
 
     def test_list_items_employee(self):
         text = '1) Jordan\n'
@@ -93,6 +88,21 @@ class TestSearchTask(unittest.TestCase):
         tasks = models.Task.select().where(models.Task.title == 'Not A Real Title')
 
         self.assertEqual("No items available.", self.ui_obj.list_items('', tasks))
+
+    @patch.object(SearchTask, 'entry_pagination')
+    def test_search_task_time(self, mock_ui):
+        with patch('builtins.input') as mock_input:
+            mock_input.side_effect = ['15']
+            self.ui_obj.search_task_options('c')
+            self.assertTrue(mock_ui.called)
+
+    @patch('builtins.input')
+    def test_search_task_return(self, mock):
+        mock.side_effect = ['words not in a task']
+        self.assertTrue(self.ui_obj.search_task_options('d'))
+
+    def test_search_task_quit(self):
+        self.assertEqual(self.ui_obj.search_task_options('e'), False)
 
     def test_add_valid_input_employee(self):
         valid_input = ['q', '1', 'jordan']
