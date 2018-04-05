@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2123287d-5204-43f6-b795-3677e51d98b2" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/add_task.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/search_task.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_addTask.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_userInterface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/treehouse-project-03.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/treehouse-project-03.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_helpers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_interfaceHelpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_searchTask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_workLog.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_workLog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work_log.py" beforeDir="false" afterPath="$PROJECT_DIR$/work_log.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/search_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/search_task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_searchTask.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_searchTask.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,38 +19,20 @@
     <favorites_list name="treehouse-project-03" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="search_task.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/search_task.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <folding>
-                    <element signature="e#0#15#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="test_searchTask.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/tests/test_searchTask.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <folding>
-                    <element signature="e#0#15#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="search_task.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/search_task.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret lean-forward="true" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -76,6 +52,7 @@
       <find>Entry</find>
       <find>entry</find>
       <find>task_date</find>
+      <find>self.test_task</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -119,17 +96,19 @@
         <option value="$PROJECT_DIR$/add_task_ui.py" />
         <option value="$PROJECT_DIR$/test_userInterface.py" />
         <option value="$PROJECT_DIR$/user_interface.py" />
-        <option value="$PROJECT_DIR$/tests/test_searchTask.py" />
         <option value="$PROJECT_DIR$/tests/test_userInterface.py" />
         <option value="$PROJECT_DIR$/tests/test_workLog.py" />
+        <option value="$PROJECT_DIR$/.coveragerc" />
+        <option value="$PROJECT_DIR$/search_task.py" />
+        <option value="$PROJECT_DIR$/tests/test_searchTask.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-106" />
-    <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="916" />
+    <option name="x" value="-105" />
+    <option name="y" value="22" />
+    <option name="width" value="1617" />
+    <option name="height" value="917" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -144,11 +123,6 @@
             <path>
               <item name="work-log-with-database" type="b2602c69:ProjectViewProjectNode" />
               <item name="work-log-with-database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="work-log-with-database" type="b2602c69:ProjectViewProjectNode" />
-              <item name="work-log-with-database" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -180,8 +154,26 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in test_workLog.py">
-    <configuration name="Unittests for test_userInterface.TestUserInterface.test_task_submenu" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.Unittests in test_searchTask.py">
+    <configuration name="work_log" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="treehouse-project-03" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work_log.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="Unittests for test_searchTask.TestSearchTask.test_list_items_multiple" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="treehouse-project-03" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -191,10 +183,10 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_userInterface.TestUserInterface.test_task_submenu&quot;" />
+      <option name="_new_target" value="&quot;test_searchTask.TestSearchTask.test_list_items_multiple&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
     </configuration>
-    <configuration name="Unittests for test_workLog.TestWorkLog.test_main_menu" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="treehouse-project-03" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -204,10 +196,10 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_workLog.TestWorkLog.test_main_menu&quot;" />
+      <option name="_new_target" value="&quot;test_searchTask.TestSearchTask.test_multiple_tasks&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
     </configuration>
-    <configuration name="Unittests for test_workLog.TestWorkLog.test_run_work_log" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests in test_searchTask.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="treehouse-project-03" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -217,23 +209,10 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_workLog.TestWorkLog.test_run_work_log&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-    </configuration>
-    <configuration name="Unittests in test_userInterface.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="treehouse-project-03" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_userInterface.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_searchTask.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
-    <configuration name="Unittests in test_workLog.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests in tests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="treehouse-project-03" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -243,23 +222,23 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/test_workLog.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.Unittests in test_userInterface.py" />
-      <item itemvalue="Python tests.Unittests for test_userInterface.TestUserInterface.test_task_submenu" />
-      <item itemvalue="Python tests.Unittests for test_workLog.TestWorkLog.test_main_menu" />
-      <item itemvalue="Python tests.Unittests for test_workLog.TestWorkLog.test_run_work_log" />
-      <item itemvalue="Python tests.Unittests in test_workLog.py" />
+      <item itemvalue="Python tests.Unittests in tests" />
+      <item itemvalue="Python tests.Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" />
+      <item itemvalue="Python.work_log" />
+      <item itemvalue="Python tests.Unittests in test_searchTask.py" />
+      <item itemvalue="Python tests.Unittests for test_searchTask.TestSearchTask.test_list_items_multiple" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests in test_workLog.py" />
-        <item itemvalue="Python tests.Unittests for test_workLog.TestWorkLog.test_run_work_log" />
-        <item itemvalue="Python tests.Unittests for test_workLog.TestWorkLog.test_main_menu" />
-        <item itemvalue="Python tests.Unittests in test_userInterface.py" />
-        <item itemvalue="Python tests.Unittests for test_userInterface.TestUserInterface.test_task_submenu" />
+        <item itemvalue="Python tests.Unittests in test_searchTask.py" />
+        <item itemvalue="Python tests.Unittests for test_searchTask.TestSearchTask.test_list_items_multiple" />
+        <item itemvalue="Python.work_log" />
+        <item itemvalue="Python tests.Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" />
+        <item itemvalue="Python tests.Unittests in tests" />
       </list>
     </recent_temporary>
   </component>
@@ -404,51 +383,50 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test_userInterface_py - 2018.04.04 at 16h 58m 25s.xml">
-      <configuration name="Unittests in test_userInterface.py" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_multiple_tasks - 2018.04.04 at 20h 24m 18s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_userInterface_TestUserInterface_test_task_submenu - 2018.04.04 at 17h 02m 10s.xml">
-      <configuration name="Unittests for test_userInterface.TestUserInterface.test_task_submenu" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_multiple_tasks - 2018.04.04 at 20h 24m 43s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_userInterface_py - 2018.04.04 at 17h 02m 15s.xml">
-      <configuration name="Unittests in test_userInterface.py" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_multiple_tasks - 2018.04.04 at 20h 24m 53s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_workLog_TestWorkLog_test_main_menu - 2018.04.04 at 17h 04m 57s.xml">
-      <configuration name="Unittests for test_workLog.TestWorkLog.test_main_menu" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_multiple_tasks - 2018.04.04 at 20h 25m 55s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_workLog_TestWorkLog_test_run_work_log - 2018.04.04 at 17h 08m 00s.xml">
-      <configuration name="Unittests for test_workLog.TestWorkLog.test_run_work_log" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_multiple_tasks - 2018.04.04 at 20h 26m 02s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_multiple_tasks" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_workLog_TestWorkLog_test_run_work_log - 2018.04.04 at 17h 09m 58s.xml">
-      <configuration name="Unittests for test_workLog.TestWorkLog.test_run_work_log" configurationId="tests" />
+    <history-entry file="Unittests_in_test_searchTask_py - 2018.04.04 at 20h 28m 18s.xml">
+      <configuration name="Unittests in test_searchTask.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_workLog_TestWorkLog_test_run_work_log - 2018.04.04 at 17h 10m 25s.xml">
-      <configuration name="Unittests for test_workLog.TestWorkLog.test_run_work_log" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_list_items_multiple - 2018.04.04 at 20h 31m 53s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_list_items_multiple" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_workLog_TestWorkLog_test_run_work_log - 2018.04.04 at 17h 10m 55s.xml">
-      <configuration name="Unittests for test_workLog.TestWorkLog.test_run_work_log" configurationId="tests" />
+    <history-entry file="Unittests_for_test_searchTask_TestSearchTask_test_list_items_multiple - 2018.04.04 at 20h 34m 18s.xml">
+      <configuration name="Unittests for test_searchTask.TestSearchTask.test_list_items_multiple" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_workLog_py - 2018.04.04 at 17h 11m 51s.xml">
-      <configuration name="Unittests in test_workLog.py" configurationId="tests" />
+    <history-entry file="Unittests_in_test_searchTask_py - 2018.04.04 at 20h 34m 24s.xml">
+      <configuration name="Unittests in test_searchTask.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_workLog_py - 2018.04.04 at 17h 12m 24s.xml">
-      <configuration name="Unittests in test_workLog.py" configurationId="tests" />
+    <history-entry file="Unittests_in_test_searchTask_py - 2018.04.04 at 20h 37m 35s.xml">
+      <configuration name="Unittests in test_searchTask.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1680" height="933" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48794064" visible="true" weight="0.12666245" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48794064" visible="true" weight="0.12658228" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50918305" side_tool="true" weight="0.3257066" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32928476" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4920836" weight="0.32523617" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4920836" weight="0.3241627" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49081698" weight="0.32523617" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49746192" weight="0.31039137" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49746192" weight="0.3098086" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.17986067" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.31039137" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49746192" weight="0.39811066" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3098086" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49746192" weight="0.39712918" />
       <window_info id="Favorites" order="2" sideWeight="0.5120594" side_tool="true" weight="0.160228" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -491,34 +469,68 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="77" />
+      <option name="time" value="81" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>bool(entries)</expression-string>
+        <expression-string>self.test_task.title</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>bool(entries[0])</expression-string>
+        <expression-string>self.test_task.name</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>entries[0]</expression-string>
+        <expression-string>self.task.name</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>entries is None</expression-string>
+        <expression-string>self.task.title</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>bool(self.employee)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.employee</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(self.test_task)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.test_task</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.test_task[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tests/test_searchTask.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/database.py" />
     <entry file="file://$PROJECT_DIR$/user_interface.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -607,53 +619,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md" />
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/peewee.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="2509" selection-start-line="2509" selection-end-line="2509" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/unittest/loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helpers.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="35" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_models.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_addTask.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="30" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/peewee.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/unittest/loader.py" />
+    <entry file="file://$PROJECT_DIR$/tests/base.py" />
     <entry file="file://$PROJECT_DIR$/add_task.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -663,30 +632,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_userInterface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="29" column="17" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_userInterface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="64" column="37" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_userInterface.py" />
     <entry file="file://$PROJECT_DIR$/work_log.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="362">
@@ -717,9 +663,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_searchTask.py">
+    <entry file="file://$PROJECT_DIR$/.coveragerc">
       <provider selected="true" editor-type-id="text-editor">
         <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.coverage">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_userInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="946">
+          <caret line="64" column="37" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_addTask.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="14" selection-start-line="14" selection-end-line="20" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_searchTask.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret lean-forward="true" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -729,6 +713,7 @@
     <entry file="file://$PROJECT_DIR$/search_task.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
+          <caret lean-forward="true" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

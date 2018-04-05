@@ -139,24 +139,6 @@ class SearchTask(UserInterface):
 
         return found_entries
 
-    def multiple_tasks(self, tasks):
-        """If there are two names that are the same."""
-
-        prompt = self.list_items('Multiple matches found. Please choose a correct match.\n', tasks)
-        prompt += "\n> "
-        valid_input = self.add_valid_input(tasks)
-
-        user_input = input(prompt)
-        while user_input not in valid_input:
-            user_input = self.ask_for_valid_input(prompt)
-
-        found_tasks = (models.Task
-                       .select()
-                       .join(models.Employee)
-                       .where(models.Employee.name == user_input.title()))
-
-        return found_tasks
-
     @staticmethod
     def list_items(prompt, items):
 

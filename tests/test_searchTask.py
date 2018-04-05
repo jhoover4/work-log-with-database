@@ -26,15 +26,19 @@ class TestSearchTask(unittest.TestCase):
             title=self.title_input,
             time_spent=self.time_spent_input,
             notes=self.notes_input,
-            employee=self.employee)
+            employee=self.employee
+        )
 
         self.ui_obj = SearchTask()
 
     def tearDown(self):
-        try:
-            self.test_task.delete_instance()
-        except models.DoesNotExist:
-            pass
+        tasks = models.Task.select()
+        for task in tasks:
+            task.delete_instance()
+
+        employees = models.Employee.select()
+        for employee in employees:
+            employee.delete_instance()
 
         try:
             models.db.close()
@@ -80,6 +84,21 @@ class TestSearchTask(unittest.TestCase):
 
     def test_list_items_task(self):
         text = '1) Test\n'
+        tasks = models.Task.select()
+
+        self.assertEqual(text, self.ui_obj.list_items('', tasks))
+
+    def test_list_items_multiple(self):
+        models.Task.create(
+            task_date='06/15/1990',
+            title='Test2',
+            time_spent='40',
+            employee=self.employee
+        )
+
+        text = '1) Test\n'
+        text += '2) Test2\n'
+
         tasks = models.Task.select()
 
         self.assertEqual(text, self.ui_obj.list_items('', tasks))
@@ -138,14 +157,7 @@ class TestSearchTask(unittest.TestCase):
         self.assertEqual(expected_output, self.ui_obj.edit_task_menu(self.test_task))
 
     @patch.object(SearchTask, 'edit_task_menu')
-    def test_edit_task_menu(self, mock_ui):
-        with patch('builtins.input') as mock_input:
-            mock_input.side_effect = ['a', '06/13/1990', 'q']
-            self.ui_obj.edit_task_menu_loop(self.test_task)
-            self.assertTrue(mock_ui.called)
-
-    @patch.object(SearchTask, 'edit_task_menu')
-    def test_edit_task_menu(self, mock_ui):
+    def test_edit_task_menu_loop(self, mock_ui):
         with patch('builtins.input') as mock_input:
             mock_input.side_effect = ['a', '06/13/1990', 'q']
             self.ui_obj.edit_task_menu_loop(self.test_task)
