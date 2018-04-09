@@ -1,4 +1,3 @@
-import unittest
 import models
 
 from user_interface import UserInterface
@@ -23,9 +22,11 @@ class SearchTask(UserInterface):
             self.search_task_options(self.task_submenu(prompt))
 
     def search_task_options(self, menu_choice):
+        """Switch logic for search task ui."""
+
         entries = None
 
-        if menu_choice.lower() == "e":
+        if menu_choice.lower() == "e" or menu_choice.lower() == "q":
             return False
 
         self.clear()
@@ -49,12 +50,13 @@ class SearchTask(UserInterface):
         if entries:
             self.entry_pagination(entries)
         else:
-            print("No entries available.\n\n")
+            user_interface = UserInterface()
+            input(user_interface.return_to_menu("No entries available"))
 
         return True
 
     def entry_pagination(self, entries):
-        """Pages through returned entries for user"""
+        """Pages through returned entries for user."""
 
         user_input = ''
         i = 0
@@ -90,7 +92,7 @@ class SearchTask(UserInterface):
             elif user_input.lower() == 'd':
                 entries[i].delete_instance()
             elif user_input.lower() == 'e':
-                self.edit_task_menu(entries[i])
+                self.edit_task_menu_loop(entries[i])
             else:
                 i += 1
 
@@ -110,9 +112,6 @@ class SearchTask(UserInterface):
                        .select()
                        .join(models.Employee)
                        .where(models.Employee.name == user_input.strip().title()))
-
-        while isinstance(found_tasks, list):
-            found_tasks = self.multiple_tasks(found_tasks)
 
         return found_tasks
 
@@ -141,6 +140,7 @@ class SearchTask(UserInterface):
 
     @staticmethod
     def list_items(prompt, items):
+        """Lists all items associated with an employee for user to choose."""
 
         is_employee = (items.model.__name__ == 'Employee')
 
@@ -165,6 +165,8 @@ class SearchTask(UserInterface):
 
     @staticmethod
     def add_valid_input(items):
+        """Checks for valid employee or task name input."""
+
         valid_input = ['q']
 
         for item in items:
@@ -206,6 +208,8 @@ class SearchTask(UserInterface):
         return prompt
 
     def edit_task_menu_loop(self, task):
+        """Asks user to choose task until valid input is supplied."""
+
         user_input = ''
         prompt = self.edit_task_menu(task)
 
@@ -214,6 +218,7 @@ class SearchTask(UserInterface):
             self.edit_task(user_input, task)
 
     def edit_task(self, menu_choice, entry):
+        """Edit task switch logic."""
 
         if menu_choice == "a":
             entry.task_date = self.input_date("Update Task Date:\n>")
@@ -227,6 +232,3 @@ class SearchTask(UserInterface):
             entry.employee = self.input_employee("Update Employee:\n>")
 
         entry.save()
-
-if __name__ == '__main__':
-    unittest.main()

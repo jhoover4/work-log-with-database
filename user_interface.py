@@ -5,9 +5,11 @@ from datetime import datetime
 class UserInterface:
 
     def return_to_menu(self, add_msg=''):
+        """Exit current task option that hangs until key is pressed."""
+
         self.clear()
 
-        return "{}. Press any key to return to the menu\n".format(add_msg)
+        return "{}. Press any key to return to the menu.\n".format(add_msg)
 
     @staticmethod
     def date_check(date_str):
@@ -42,6 +44,10 @@ class UserInterface:
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def ask_for_valid_input(self, prompt, add_quit=False):
+        """Prompts for getting input from user. If input is invalid,
+        returns error and loops until input is valid.
+        """
+
         self.clear()
 
         if add_quit:
@@ -54,7 +60,7 @@ class UserInterface:
         return user_input
 
     def input_date(self, msg):
-        """Processes user input and verifies it."""
+        """Processes user date input and verifies it."""
 
         self.clear()
         task_date = input(msg)
@@ -65,6 +71,8 @@ class UserInterface:
         return task_date
 
     def input_time(self, msg):
+        """Processes user time input and verifies it."""
+
         self.clear()
         time_spent = input(msg)
 
@@ -74,6 +82,8 @@ class UserInterface:
         return time_spent
 
     def input_employee(self, msg):
+        """Processes user employee name input and verifies it."""
+
         employee_input = input(msg)
 
         while not employee_input.isalpha():
@@ -82,6 +92,8 @@ class UserInterface:
         return employee_input
 
     def input_text(self, msg):
+        """Processes miscellaneous string input and verifies it."""
+
         self.clear()
         notes = input(msg)
 

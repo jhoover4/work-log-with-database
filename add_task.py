@@ -1,7 +1,7 @@
 import models
 
-
 from user_interface import UserInterface
+
 
 class AddTask(UserInterface):
 
@@ -28,4 +28,4 @@ class AddTask(UserInterface):
             notes=notes,
             employee=employee)
 
-        input(self.return_to_menu())
+        input(self.return_to_menu("Task added"))

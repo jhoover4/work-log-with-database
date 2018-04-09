@@ -4,7 +4,7 @@ This is the fourth project in Treehouse Python tech degree.
 
 To use run work_log.py.
 
-To test run tests.py.
+Test using unittest with ```Python -m unittest discover -s tests```.
 
 ## Description
 

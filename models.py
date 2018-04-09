@@ -27,6 +27,7 @@ class Task(CustomModel):
     class Meta:
         database = db
 
+
 def initialize_db():
     try:
         db.connect()
